@@ -1,0 +1,227 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API de Búsqueda GEMA",
+        "description": "Documentación de la API para la búsqueda en FoxPro",
+        "contact": {
+            "email": "soporte@asotrauma.com.co"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "/api"
+        }
+    ],
+    "paths": {
+        "/select": {
+            "get": {
+                "tags": [
+                    "FoxPro"
+                ],
+                "summary": "Selecciona datos de la base de datos",
+                "operationId": "7e3502c606527f6051dffb72b6163214",
+                "parameters": [
+                    {
+                        "name": "query",
+                        "in": "query",
+                        "description": "Consulta SQL a ejecutar",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Consulta ejecutada con éxito",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object"
+                                            }
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Consulta ejecutada correctamente"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error en la solicitud",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Error en la solicitud"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/insert": {
+            "post": {
+                "tags": [
+                    "FoxPro"
+                ],
+                "summary": "Inserta un registro en la base de datos",
+                "operationId": "6cc194166d4ee9d9bb4b4fec6ffcf460",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "table": {
+                                        "description": "Nombre de la tabla",
+                                        "type": "string"
+                                    },
+                                    "fields": {
+                                        "description": "Campos a insertar",
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "values": {
+                                        "description": "Valores correspondientes",
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Registro insertado correctamente"
+                    },
+                    "400": {
+                        "description": "Error en la solicitud"
+                    }
+                }
+            }
+        },
+        "/update": {
+            "patch": {
+                "tags": [
+                    "FoxPro"
+                ],
+                "summary": "Actualiza un registro en la base de datos",
+                "operationId": "f783fbcd6e908d442b0eccfe089e8a4f",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "table": {
+                                        "description": "Nombre de la tabla",
+                                        "type": "string"
+                                    },
+                                    "fields": {
+                                        "description": "Campos a actualizar",
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "values": {
+                                        "description": "Valores correspondientes",
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "condition": {
+                                        "description": "Condición para la actualización",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "Registro actualizado correctamente"
+                    },
+                    "400": {
+                        "description": "Error en la solicitud"
+                    }
+                }
+            }
+        },
+        "/delete": {
+            "delete": {
+                "tags": [
+                    "FoxPro"
+                ],
+                "summary": "Elimina un registro en la base de datos",
+                "operationId": "9ef6ccad8ec9d25dc11a62b0fb4d1cd5",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "table": {
+                                        "description": "Nombre de la tabla",
+                                        "type": "string"
+                                    },
+                                    "condition": {
+                                        "description": "Condición para la eliminación",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "Registro eliminado correctamente"
+                    },
+                    "400": {
+                        "description": "Error en la solicitud"
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "FoxPro",
+            "description": "FoxPro"
+        }
+    ]
+}
