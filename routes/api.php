@@ -17,6 +17,7 @@ use App\Http\Controllers\Api\FoxProController;
 // Ruta para realizar una consulta SELECT simple
 Route::get('select', [FoxProController::class, 'select']);
 Route::get('historia-urgencias', [FoxProController::class, 'historiaUrgencias']);
+Route::get('historia-clinica', [FoxProController::class, 'historiaClinica']);
 Route::post('/insert', [FoxProController::class, 'insert']);
 Route::patch('/update', [FoxProController::class, 'update']);
 Route::delete('/delete', [FoxProController::class, 'delete']);

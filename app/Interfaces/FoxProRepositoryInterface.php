@@ -11,5 +11,6 @@ interface FoxProRepositoryInterface
     public function isDate($value): bool;
     public function syncAllFoxProToMySQL(string $foxTable): array;
     public function historiaUrgencias(string $documento, string $mes, string $año);
+    public function historiaClinica(string $documento, string $mes, string $año);
 
 }

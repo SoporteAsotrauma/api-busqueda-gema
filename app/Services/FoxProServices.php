@@ -36,6 +36,10 @@ class FoxProServices
     {
         return $this->foxProRepository->historiaUrgencias($documento, $mes, $año);
     }
+    public function historiaClinica(string $documento, string $mes, string $año)
+    {
+        return $this->foxProRepository->historiaClinica($documento, $mes, $año);
+    }
 
 
 }

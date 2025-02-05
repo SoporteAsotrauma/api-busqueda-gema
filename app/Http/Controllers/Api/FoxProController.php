@@ -236,4 +236,23 @@ class FoxProController extends Controller
         return $this->foxProService->historiaUrgencias($documento, $mes, $año); // Esto te permitirá ver la estructura real en Postman
 
     }
+    public function historiaClinica(Request $request)
+    {
+        // Obtener el parámetro "documento" desde la consulta
+        $documento = $request->query('documento');
+        $mes = $request->query('mes');
+        $año = $request->query('año');
+
+        // Verificar que el parámetro "documento" esté presente
+        if (!$documento) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'El parámetro "documento" es requerido.',
+            ], 400);
+        }
+
+
+        return $this->foxProService->historiaClinica($documento, $mes, $año); // Esto te permitirá ver la estructura real en Postman
+
+    }
 }
