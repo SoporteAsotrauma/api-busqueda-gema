@@ -395,10 +395,13 @@ class FoxProRepository implements FoxProRepositoryInterface
     public function historiaClinica(string $documento, string $mes, string $año)
     {
         $pdo = ConnectionFox::con();
-        $rehospit = "C:\Re_ho\RE_HOSPIT";
-        $ptotc00 = "C:\Re_ho\ptotc00";
-        $sahisto = "C:\Re_ho\SAHISTOC";
-
+        $rehospit = "Z:\GEMA_MEDICOS\DATOS\RE_Hospit";
+        $ptotc00 = "Z:\GEMA10.D\IPT\DATOS\PTOTC00";
+        $sahisto = "Z:\\GEMA10.D\\SALUD\\DATOS\\SAHISTOC";
+        $vendedor = "Z:\\GEMA10.D\\DGEN\\DATOS\\VENDEDOR";
+        $especial = "Z:\GEMA10.d\SALUD\DATOS\Especial";
+        $depar = "Z:\GEMA10.d\DGEN\DATOS\departam";
+        $muni = "Z:\GEMA10.d\DGEN\DATOS\municip";
 
         // Función para convertir y formatear solo textos
         $c = fn($s) => $s !== null && is_string($s) ? trim(mb_convert_encoding($s, "UTF-8", "CP1252")) : $s;
@@ -406,13 +409,26 @@ class FoxProRepository implements FoxProRepositoryInterface
         try {
              //Ejecuta la consulta SQL
             $stmt = $pdo->query("
-            SELECT rt.docn, rt.num_id, s.nombre, s.nombre2, s.apellido1, s.apellido2, s.tipo_id, s.fech_nacim, s.edad, s.sexo, s.estad_civ, s.direccion, s.ciudad, s.telefono, s.nomb_resp,
+            SELECT d.depart, v.nombre as medico,v.num_id as ceddoc,v.regmed, e.nombre as especial, p.docn_sin, rt.docn, rt.num_id, s.nombre, s.nombre2, s.apellido1, s.apellido2, s.tipo_id, s.fech_nacim, s.edad, s.sexo, s.estad_civ, s.direccion, s.ciudad, s.telefono, s.nomb_resp, s.ocupacion,
                    rt.freg, rt.hora, rt.moti_solic, rt.reingre, rt.est_ingr, rt.enfer_act, rt.sv_ta as ta, rt.sv_fr as fr, rt.sv_tem as tem, rt.estembr as embri,
-                   rt.estcons, rt.glasglow, rt.cabeza, rt.cuello, rt.torax, rt.abdomen, rt.genitouri
+                   rt.estcons, rt.glasglow, rt.cabeza, rt.cuello, rt.torax, rt.abdomen, rt.genitouri, rt.pelvis, rt.dorsoext, rt.neuro, rt.codigo
             FROM $rehospit rt
             LEFT JOIN $sahisto s
             ON $documento = s.num_histo
-            WHERE rt.docn = 578664
+            LEFT JOIN $ptotc00 p
+            ON rt.docn = p.docn
+            LEFT JOIN $vendedor v
+            ON rt.codigo = v.vendedor
+            LEFT JOIN $especial e
+            ON v.especial = e.codigo
+            LEFT JOIN $muni m
+            ON s.ciudad = m.nombre
+            LEFT JOIN $depar d
+            ON m.depto = d.depart
+            WHERE rt.num_id = $documento
+            AND MONTH(rt.freg) = $mes
+            AND YEAR(rt.freg) = $año
+            ORDER BY rt.freg DESC
 ");
 //            $stmtDiag = $pdo->query("
 //    SELECT re.diag_ingre, ci1.nombre AS nombre_diag_ingre,
@@ -456,18 +472,17 @@ class FoxProRepository implements FoxProRepositoryInterface
 //                WHERE re.num_id = $documento AND MONTH(re.freg) = $mes AND YEAR(re.freg) = $año");
 //
 //            // Obtiene los resultados como un array asociativo
-            $data = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+            $data = $stmt->fetch(\PDO::FETCH_ASSOC);
 //            $dataE = $stmtE->fetchAll(\PDO::FETCH_ASSOC);
 //            $diag = $stmtDiag->fetchAll(\PDO::FETCH_ASSOC);
 //            $diagSali = $stmtDiagSali->fetchAll(\PDO::FETCH_ASSOC);
 
             // Formatea solo las columnas de texto
-            foreach ($data as &$row) {
-                foreach ($row as $key => &$value) {
+                foreach ($data as $key => &$value) {
                     // Verificar si el valor es una cadena de texto y formatearlo
                     $value = $c($value);
                 }
-            }
+
 //            foreach ($dataE as &$row) {
 //                foreach ($row as $key => &$value) {
 //                    // Verificar si el valor es una cadena de texto y formatearlo
@@ -501,7 +516,7 @@ class FoxProRepository implements FoxProRepositoryInterface
 //                'imageBase64' => $imageBase64,
             ])->setPaper('legal', 'portrait');
 
-            return $pdf->download('historia_urgencias.pdf');
+            return $pdf->download('historia_hospitalizacion.pdf');
 
             //return $data;
         } catch (\Exception $e) {

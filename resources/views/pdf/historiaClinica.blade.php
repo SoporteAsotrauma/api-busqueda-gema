@@ -59,9 +59,9 @@ $base64 = 'data:image/' . $type . ';base64,' . base64_encode($img);
                 <h2 style="margin: 0; font-size: 18px;">HISTORIA DE HOSPITALIZACION</h2>
             </td>
             <td style="text-align: right; font-size: 12px; vertical-align: middle;">
-                <p style="margin: 0;">{{ $data[0]['num_id'] ?? 'N/A' }}</p>
-                <p style="margin: 0;"><strong>Admisión:</strong> {{ $data[0]['docn'] ?? 'N/A' }}</p>
-                <p style="margin: 0;"><strong>Siniestro:</strong> {{ ($data[0]['docn_sin'] ?? '') }}</p>
+                <p style="margin: 0;">{{ $data['num_id'] ?? 'N/A' }}</p>
+                <p style="margin: 0;"><strong>Admisión:</strong> {{ $data['docn'] ?? 'N/A' }}</p>
+                <p style="margin: 0;"><strong>Siniestro:</strong> {{ ($data['docn_sin'] ?? '') }}</p>
             </td>
         </tr>
     </table>
@@ -72,46 +72,46 @@ $base64 = 'data:image/' . $type . ';base64,' . base64_encode($img);
         <tr>
             <td style="width: 33%; text-align: left; font-size: 11px;">
                 <strong>Nombre: </strong>
-                {{ $data[0]['apellido1'] ?? '' }} {{ $data[0]['apellido2'] ?? '' }} {{ $data[0]['nombre'] ?? '' }} {{ $data[0]['nombre2'] ?? '' }}
+                {{ $data['apellido1'] ?? '' }} {{ $data['apellido2'] ?? '' }} {{ $data['nombre'] ?? '' }} {{ $data[0]['nombre2'] ?? '' }}
             </td>
             <td style="width: 33%; text-align: center; font-size: 11px;">
-                <strong>Num. ID: </strong> {{ $data[0]['tipo_id'] ?? '' }}. {{ $data[0]['num_id'] ?? '' }}
+                <strong>Num. ID: </strong> {{ $data['tipo_id'] ?? '' }}. {{ $data['num_id'] ?? '' }}
             </td>
             <td style="width: 33%; text-align: right; font-size: 11px;">
-                <strong>Fecha de nacimiento: </strong> {{ $data[0]['fech_nacim'] ?? '' }}
+                <strong>Fecha de nacimiento: </strong> {{ $data['fech_nacim'] ?? '' }}
             </td>
         </tr>
         <tr>
-            <td style="text-align: left; font-size: 11px;"><strong>Edad: </strong>{{ $data[0]['edad'] ?? '' }}</td>
-            <td style="text-align: center; font-size: 11px;"><strong>Sexo: </strong>{{ $data[0]['sexo'] ?? '' }}</td>
+            <td style="text-align: left; font-size: 11px;"><strong>Edad: </strong>{{ $data['edad'] ?? '' }}</td>
+            <td style="text-align: center; font-size: 11px;"><strong>Sexo: </strong>{{ $data['sexo'] ?? '' }}</td>
             <td style="text-align: right; font-size: 11px;"><strong>Estado
-                    civil: </strong>{{ $data[0]['estad_civ'] ?? '' }}</td>
+                    civil: </strong>{{ $data['estad_civ'] ?? '' }}</td>
         </tr>
         <tr>
-            <td style="text-align: left; font-size: 11px;"><strong>Dirección: </strong>{{ $data[0]['direccion'] ?? '' }}
+            <td style="text-align: left; font-size: 11px;"><strong>Dirección: </strong>{{ $data['direccion'] ?? '' }}
             </td>
-            <td style="text-align: center; font-size: 11px;"><strong>Ciudad: </strong>{{ $data[0]['ciudad'] ?? '' }}
+            <td style="text-align: center; font-size: 11px;"><strong>Ciudad: </strong>{{ $data['ciudad'] ?? '' }}
             </td>
-            <td style="text-align: right; font-size: 11px;"><strong>Dpto: </strong>{{ $data[0]['depart'] ?? '' }}</td>
+            <td style="text-align: right; font-size: 11px;"><strong>Dpto: </strong>{{ $data['depart'] ?? '' }}</td>
         </tr>
         <tr>
-            <td style="text-align: left; font-size: 11px;"><strong>Teléfono: </strong>{{ $data[0]['telefono'] ?? '' }}
+            <td style="text-align: left; font-size: 11px;"><strong>Teléfono: </strong>{{ $data['telefono'] ?? '' }}
             </td>
             <td style="text-align: center; font-size: 11px;">
-                <strong>Ocupación: </strong>{{ $data[0]['ocupacion'] ?? '' }}</td>
+                <strong>Ocupación: </strong>{{ $data['ocupacion'] ?? '' }}</td>
             <td style="text-align: right; font-size: 11px;">
-                <strong>Responsable: </strong>{{ $data[0]['nom_resp'] ?? '' }}</td>
+                <strong>Responsable: </strong>{{ $data['nomb_resp'] ?? '' }}</td>
         </tr>
         <tr>
             <td style="text-align: left; font-size: 11px;">
-                <strong>AT: </strong>{{ ($data[0]['es_act'] ?? 0) == 1 ? 'SI' : 'NO' }}</td>
+                <strong>AT: </strong>{{ ($data['es_act'] ?? 0) == 1 ? 'SI' : 'NO' }}</td>
             <td style="text-align: center; font-size: 11px;">
-                <strong>OBS: </strong>{{ ($data[0]['es_obs'] ?? '') === 'S' ? 'SI' : 'NO' }}</td>
+                <strong>OBS: </strong>{{ ($data['es_obs'] ?? '') === 'S' ? 'SI' : 'NO' }}</td>
         </tr>
         <tr>
             <td colspan="2"></td>
             <td style="text-align: right; font-size: 11px;"><strong>Fecha/Hora de
-                    registro: </strong>{{ $data[0]['freg'] ?? '' }} {{ \Carbon\Carbon::parse($data[0]['horare'] ?? '')->format('H:i') }}
+                    registro: </strong>{{ $data['freg'] ?? '' }} {{ \Carbon\Carbon::parse($data['horare'] ?? '')->format('H:i') }}
             </td>
         </tr>
     </table>
@@ -120,17 +120,17 @@ $base64 = 'data:image/' . $type . ';base64,' . base64_encode($img);
 </div>
 
 <div class="content">
-    <h3 style="margin-bottom: 1px;"><strong>Fecha: </strong>{{ $data[0]['freg'] ?? ''}}</h3>
+    <h3 style="margin-bottom: 1px;"><strong>Fecha: </strong>{{ $data['freg'] ?? ''}}</h3>
     <table width="100%" style="margin-bottom: 1px;">
         <tr>
             <td style="width: 120px;">
-                <p style="font-size: 13px; margin-bottom: 1px;">Registro: {{ $data[0]['hora'] }}</p>
+                <p style="font-size: 13px; margin-bottom: 1px;">Registro: {{ $data['hora'] }}</p>
             </td>
             <td>
-                <p style="font-size: 12px; margin-bottom: 1px;"> (DR(A). {{ $data[0]['codigo'] ?? '' }}
-                    - {{ $data[0]['medico'] ?? ''}}
-                    -C.C. {{ $data[0]['ceddoc'] ?? ''}}-REG.MEDICO: {{ $data[0]['regmed'] ?? '' }}
-                    -{{ $data[0]['especial'] ?? ''}}</p>
+                <p style="font-size: 12px; margin-bottom: 1px;"> (DR(A). {{ $data['codigo'] ?? '' }}
+                    - {{ $data['medico'] ?? ''}}
+                    -C.C. {{ $data['ceddoc'] ?? ''}}-REG.MEDICO: {{ $data['regmed'] ?? '' }}
+                    -{{ $data['especial'] ?? ''}}</p>
             </td>
         </tr>
     </table>
@@ -138,22 +138,22 @@ $base64 = 'data:image/' . $type . ';base64,' . base64_encode($img);
         <p style="font-size: 13px; margin-bottom: 1px; display: inline-block; border-bottom: 1px solid black;">
             <strong>Motivo Consulta</strong>
         </p>
-        <p style="font-size: 13px; margin-bottom: 1px;">{{ $data[0]['moti_solic'] ?? ''}}</p>
+        <p style="font-size: 13px; margin-bottom: 1px;">{{ $data['moti_solic'] ?? ''}}</p>
 
         <p style="font-size: 13px; margin-bottom: 1px; display: inline-block; border-bottom: 1px solid black;">
             <strong>Reingreso</strong>
         </p>
-        <p style="font-size: 13px; margin-bottom: 1px;">{{ ($data[0]['reingre'] ?? '') === 'S' ? 'SI' : 'NO' }}</p>
+        <p style="font-size: 13px; margin-bottom: 1px;">{{ ($data['reingre'] ?? '') === 'S' ? 'SI' : 'NO' }}</p>
 
         <p style="font-size: 13px; margin-bottom: 1px; display: inline-block; border-bottom: 1px solid black;">
             <strong>Estado al ingreso</strong>
         </p>
-        <p style="font-size: 13px; margin-bottom: 1px;">{{ $data[0]['est_ingr'] ?? '' }}</p>
+        <p style="font-size: 13px; margin-bottom: 1px;">{{ $data['est_ingr'] ?? '' }}</p>
 
         <p style="font-size: 13px; margin-bottom: 1px; display: inline-block; border-bottom: 1px solid black;">
             <strong>Enfermedad actual</strong>
         </p>
-        <p style="font-size: 13px; margin-bottom: 1px;">{{ $data[0]['enfer_act'] ?? ''}}</p>
+        <p style="font-size: 13px; margin-bottom: 1px;">{{ $data['enfer_act'] ?? ''}}</p>
     </div>
 
     <!-- Seccion examen fisico -->
@@ -169,11 +169,11 @@ $base64 = 'data:image/' . $type . ';base64,' . base64_encode($img);
     <table width="100%">
         <tr>
             <td style="font-size: 13px;"><strong>Signos Vitales </strong></td>
-            <td style="font-size: 13px;"><strong>FC: {{ $data[0]['ta'] ?? ''}}</strong></td>
-            <td style="font-size: 13px;"><strong>FR: {{ $data[0]['fr'] ?? ''}}</strong></td>
-            <td style="font-size: 13px;"><strong>Tmp: {{ $data[0]['tem'] ?? ''}}</strong></td>
+            <td style="font-size: 13px;"><strong>FC: {{ $data['ta'] ?? ''}}</strong></td>
+            <td style="font-size: 13px;"><strong>FR: {{ $data['fr'] ?? ''}}</strong></td>
+            <td style="font-size: 13px;"><strong>Tmp: {{ $data['tem'] ?? ''}}</strong></td>
             <td style="font-size: 13px;"><strong>Estado
-                    Embriaguez: </strong> {{ ($data[0]['embri'] ?? '') === 'S' ? 'SI' : 'NO' }}</td>
+                    Embriaguez: </strong> {{ ($data['embri'] ?? '') === 'S' ? 'SI' : 'NO' }}</td>
         </tr>
         <tr>
             <td style="font-size: 13px; margin-bottom: 1px; vertical-align: middle;"><strong>Estado
@@ -185,7 +185,7 @@ $base64 = 'data:image/' . $type . ';base64,' . base64_encode($img);
                         <td style="padding-right: 6px;"><strong>Alerta:</strong></td>
                         <td style="width: 20px; height: 20px; border: 1px solid black; border-radius: 5px; text-align: center; vertical-align: middle;
                     display: inline-block; line-height: 20px;">
-                            {{ $data[0]['estcons'] == 1 ? 'X' : '' }}
+                            {{ $data['estcons'] == 1 ? 'X' : '' }}
                         </td>
                     </tr>
                 </table>
@@ -197,7 +197,7 @@ $base64 = 'data:image/' . $type . ';base64,' . base64_encode($img);
                         <td style="padding-right: 6px;"><strong>Obnibulado:</strong></td>
                         <td style="width: 20px; height: 20px; border: 1px solid black; border-radius: 5px; text-align: center; vertical-align: middle;
                     display: inline-block; line-height: 20px;">
-                            {{ $data[0]['estcons'] == 2 ? 'X' : '' }}
+                            {{ $data['estcons'] == 2 ? 'X' : '' }}
                         </td>
                     </tr>
                 </table>
@@ -209,7 +209,7 @@ $base64 = 'data:image/' . $type . ';base64,' . base64_encode($img);
                         <td style="padding-right: 6px;"><strong>Estuporoso:</strong></td>
                         <td style="width: 20px; height: 20px; border: 1px solid black; border-radius: 5px; text-align: center; vertical-align: middle;
                     display: inline-block; line-height: 20px;">
-                            {{ $data[0]['estcons'] == 3 ? 'X' : '' }}
+                            {{ $data['estcons'] == 3 ? 'X' : '' }}
                         </td>
                     </tr>
                 </table>
@@ -221,9 +221,9 @@ $base64 = 'data:image/' . $type . ';base64,' . base64_encode($img);
                         <td style="padding-right: 6px;"><strong>Coma:</strong></td>
                         <td style="width: 20px; height: 20px; border: 1px solid black; border-radius: 5px; text-align: center; vertical-align: middle;
                     display: inline-block; line-height: 20px;">
-                            {{ $data[0]['estcons'] == 4 ? 'X' : '' }}
+                            {{ $data['estcons'] == 4 ? 'X' : '' }}
                         </td>
-                        <td style="padding-left: 8px;"><strong>Glasgow: ( {{ $data[0]['glasglow'] }} )</strong></td>
+                        <td style="padding-left: 8px;"><strong>Glasgow: ( {{ $data['glasglow'] }} )</strong></td>
                     </tr>
                 </table>
             </td>
@@ -233,26 +233,53 @@ $base64 = 'data:image/' . $type . ';base64,' . base64_encode($img);
         <p style="font-size: 13px; margin-bottom: 1px; display: inline-block; border-bottom: 1px solid black;">
             <strong>Cabeza y organos de los sentidos</strong>
         </p>
-        <p style="font-size: 13px; margin-bottom: 1px;">{{ $data[0]['cabeza'] }}</p>
+        <p style="font-size: 13px; margin-bottom: 1px;">{{ $data['cabeza'] }}</p>
 
         <p style="font-size: 13px; margin-bottom: 1px; display: inline-block; border-bottom: 1px solid black;">
             <strong>Cuello</strong>
         </p>
-        <p style="font-size: 13px; margin-bottom: 1px;">{{ $data[0]['cuello'] ?? '' }}</p>
+        <p style="font-size: 13px; margin-bottom: 1px;">{{ $data['cuello'] ?? '' }}</p>
 
         <p style="font-size: 13px; margin-bottom: 1px; display: inline-block; border-bottom: 1px solid black;">
             <strong>Torax</strong>
         </p>
-        <p style="font-size: 13px; margin-bottom: 1px;">{{ $data[0]['torax'] }}</p>
+        <p style="font-size: 13px; margin-bottom: 1px;">{{ $data['torax'] }}</p>
 
         <p style="font-size: 13px; margin-bottom: 1px; display: inline-block; border-bottom: 1px solid black;">
             <strong>Abdomen</strong>
         </p>
-        <p style="font-size: 13px; margin-bottom: 1px;">{{ $data[0]['abdomen'] }}</p>
+        <p style="font-size: 13px; margin-bottom: 1px;">{{ $data['abdomen'] }}</p>
         <p style="font-size: 13px; margin-bottom: 1px; display: inline-block; border-bottom: 1px solid black;">
             <strong>Genitourinario</strong>
         </p>
-        <p style="font-size: 13px; margin-bottom: 1px;">{{ $data[0]['genitouri'] }}</p>
+        <p style="font-size: 13px; margin-bottom: 1px;">{{ $data['genitouri'] }}</p>
+        <p style="font-size: 13px; margin-bottom: 1px; display: inline-block; border-bottom: 1px solid black;">
+            <strong>Pelvis</strong>
+        </p>
+        <p style="font-size: 13px; margin-bottom: 1px;">{{ $data['pelvis'] }}</p>
+
+        <p style="font-size: 13px; margin-bottom: 1px; display: inline-block; border-bottom: 1px solid black;">
+            <strong>Dorsoext</strong>
+        </p>
+        <p style="font-size: 13px; margin-bottom: 1px;">{{ $data['dorsoext'] }}</p>
+        <p style="font-size: 13px; margin-bottom: 1px; display: inline-block; border-bottom: 1px solid black;">
+            <strong>Neurologico</strong>
+        </p>
+        <p style="font-size: 13px; margin-bottom: 1px;">{{ $data['neuro'] }}</p>
+
+        <div
+            style="text-align: center; width: 100%; position: absolute; top: 88%; left: 50%; transform: translate(-50%, -50%);">
+
+            <!-- Diagnosticos de ingreso -->
+            <h3 style="
+        display: inline-block;
+        border-bottom: 2px solid black;
+        padding-bottom: 3px;
+        ">
+                <strong>DIAGNOSTICOS INGRESO</strong>
+            </h3>
+        </div>
+
     </div>
 
 

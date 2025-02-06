@@ -100,7 +100,7 @@ $base64 = 'data:image/' . $type . ';base64,' . base64_encode($img);
             <td style="text-align: center; font-size: 11px;">
                 <strong>Ocupación: </strong>{{ $data[0]['ocupacion'] ?? '' }}</td>
             <td style="text-align: right; font-size: 11px;">
-                <strong>Responsable: </strong>{{ $data[0]['nom_resp'] ?? '' }}</td>
+                <strong>Responsable: </strong>{{ $data[0]['nomb_resp'] ?? '' }}</td>
         </tr>
         <tr>
             <td style="text-align: left; font-size: 11px;">
@@ -347,7 +347,7 @@ $base64 = 'data:image/' . $type . ';base64,' . base64_encode($img);
            padding: 5px 90px;
            display: table;
            margin: auto auto 1px;">
-        <strong>ANALISIS-PLAN-EXMENES-PROCEDIMIENTOS-TRATAMIENTOS</strong>
+        <strong>ANALISIS-PLAN-EXAMENES-PROCEDIMIENTOS-TRATAMIENTOS</strong>
     </h3>
     <div>
         <p style="font-size: 13px; margin-bottom: 1px; display: inline-block; border-bottom: 1px solid black;">
