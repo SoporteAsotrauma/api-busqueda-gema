@@ -279,6 +279,42 @@ $base64 = 'data:image/' . $type . ';base64,' . base64_encode($img);
                 <strong>DIAGNOSTICOS INGRESO</strong>
             </h3>
         </div>
+        <table width="100%" style="margin-bottom: 10px; margin-top: 30px; border-collapse: collapse;">
+            <tr>
+                <td style="width: 50%; vertical-align: top;">
+                    <p style="border-bottom:1px solid black; font-size: 13px; margin-bottom: 1px; font-weight: bold; display: inline-block;">
+                        Diagnostico de ingreso</p>
+                    <p style="font-size: 13px; margin-bottom: 1px;">{{ $diag[0]['diag_ingre'] }}
+                        -{{ $diag[0]['nombre_diag_ingre'] }}</p>
+                </td>
+                <td style="width: 50%; vertical-align: top;">
+                    @if(isset($diag[0]['nombre_diag_r1']) && $diag[0]['nombre_diag_r1'])
+                        <p style="border-bottom:1px solid black; font-size: 12px; margin-bottom: 1px; font-weight: bold; display: inline-block;">
+                            Diagnóstico relacionado 1</p>
+                        <p style="font-size: 12px; margin-bottom: 1px;">{{ $diag[0]['diag_in_r1'] }}
+                            -{{ $diag[0]['nombre_diag_r1'] }}</p>
+                    @endif
+                    @if(isset($diag[0]['nombre_diag_r2']) && $diag[0]['nombre_diag_r2'])
+                        <p style="border-bottom:1px solid black; font-size: 12px; margin-bottom: 1px; font-weight: bold; display: inline-block;">
+                            Diagnóstico relacionado 2</p>
+                        <p style="font-size: 12px; margin-bottom: 1px;">{{ $diag[0]['diag_in_r2'] }}
+                            -{{ $diag[0]['nombre_diag_r2'] }}</p>
+                    @endif
+                    @if(isset($diag[0]['nombre_diag_r3']) && $diag[0]['nombre_diag_r3'])
+                        <p style="border-bottom:1px solid black; font-size: 12px; margin-bottom: 1px; font-weight: bold; display: inline-block;">
+                            Diagnóstico relacionado 3</p>
+                        <p style="font-size: 12px; margin-bottom: 1px;">{{ $diag[0]['diag_in_r3'] }}
+                            -{{ $diag[0]['nombre_diag_r3'] }}</p>
+                    @endif
+                    @if(isset($diag[0]['nombre_diag_r4']) && $diag[0]['nombre_diag_r4'])
+                        <p style="border-bottom:1px solid black; font-size: 12px; margin-bottom: 1px; font-weight: bold; display: inline-block;">
+                            Diagnóstico relacionado 4</p>
+                        <p style="font-size: 12px; margin-bottom: 1px;">{{ $diag[0]['diag_in_r4'] }}
+                            -{{ $diag[0]['nombre_diag_r4'] }}</p>
+                    @endif
+                </td>
+            </tr>
+        </table>
 
     </div>
 

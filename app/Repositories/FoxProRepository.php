@@ -430,22 +430,22 @@ class FoxProRepository implements FoxProRepositoryInterface
             AND YEAR(rt.freg) = $año
             ORDER BY rt.freg DESC
 ");
-//            $stmtDiag = $pdo->query("
-//    SELECT re.diag_ingre, ci1.nombre AS nombre_diag_ingre,
-//           re.diag_in_r1, ci2.nombre AS nombre_diag_r1,
-//           re.diag_in_r2, ci3.nombre AS nombre_diag_r2,
-//           re.diag_in_r3, ci4.nombre AS nombre_diag_r3,
-//           re.diag_in_r4, ci5.nombre AS nombre_diag_r4
-//    FROM GEMA_MEDICOS\\DATOS\\RE_HURGE re
-//    LEFT JOIN Z:\\GEMA10.d\\SALUD\\DATOS\\cie9 ci1 ON re.diag_ingre = ci1.codigo
-//    LEFT JOIN Z:\\GEMA10.d\\SALUD\\DATOS\\cie9 ci2 ON re.diag_in_r1 = ci2.codigo
-//    LEFT JOIN Z:\\GEMA10.d\\SALUD\\DATOS\\cie9 ci3 ON re.diag_in_r2 = ci3.codigo
-//    LEFT JOIN Z:\\GEMA10.d\\SALUD\\DATOS\\cie9 ci4 ON re.diag_in_r3 = ci4.codigo
-//    LEFT JOIN Z:\\GEMA10.d\\SALUD\\DATOS\\cie9 ci5 ON re.diag_in_r4 = ci5.codigo
-//    WHERE re.num_id = $documento
-//    AND MONTH(re.freg) = $mes
-//    AND YEAR(re.freg) = $año
-//");
+            $stmtDiag = $pdo->query("
+    SELECT re.diag_ingre, ci1.nombre AS nombre_diag_ingre,
+           re.diag_in_r1, ci2.nombre AS nombre_diag_r1,
+           re.diag_in_r2, ci3.nombre AS nombre_diag_r2,
+           re.diag_in_r3, ci4.nombre AS nombre_diag_r3,
+           re.diag_in_r4, ci5.nombre AS nombre_diag_r4
+    FROM $rehospit re
+    LEFT JOIN Z:\\GEMA10.d\\SALUD\\DATOS\\cie9 ci1 ON re.diag_ingre = ci1.codigo
+    LEFT JOIN Z:\\GEMA10.d\\SALUD\\DATOS\\cie9 ci2 ON re.diag_in_r1 = ci2.codigo
+    LEFT JOIN Z:\\GEMA10.d\\SALUD\\DATOS\\cie9 ci3 ON re.diag_in_r2 = ci3.codigo
+    LEFT JOIN Z:\\GEMA10.d\\SALUD\\DATOS\\cie9 ci4 ON re.diag_in_r3 = ci4.codigo
+    LEFT JOIN Z:\\GEMA10.d\\SALUD\\DATOS\\cie9 ci5 ON re.diag_in_r4 = ci5.codigo
+    WHERE re.num_id = $documento
+    AND MONTH(re.freg) = $mes
+    AND YEAR(re.freg) = $año
+");
 //            $stmtDiagSali = $pdo->query("
 //    SELECT
 //        re.diag_salid, ci6.nombre AS nombre_diag_salid,
@@ -474,7 +474,7 @@ class FoxProRepository implements FoxProRepositoryInterface
 //            // Obtiene los resultados como un array asociativo
             $data = $stmt->fetch(\PDO::FETCH_ASSOC);
 //            $dataE = $stmtE->fetchAll(\PDO::FETCH_ASSOC);
-//            $diag = $stmtDiag->fetchAll(\PDO::FETCH_ASSOC);
+            $diag = $stmtDiag->fetchAll(\PDO::FETCH_ASSOC);
 //            $diagSali = $stmtDiagSali->fetchAll(\PDO::FETCH_ASSOC);
 
             // Formatea solo las columnas de texto
@@ -489,12 +489,12 @@ class FoxProRepository implements FoxProRepositoryInterface
 //                    $value = $c($value);
 //                }
 //            }
-//            foreach ($diag as &$row) {
-//                foreach ($row as $key => &$value) {
-//                    // Verificar si el valor es una cadena de texto y formatearlo
-//                    $value = $c($value);
-//                }
-//            }
+            foreach ($diag as &$row) {
+                foreach ($row as $key => &$value) {
+                    // Verificar si el valor es una cadena de texto y formatearlo
+                    $value = $c($value);
+                }
+            }
 //            foreach ($diagSali as &$row) {
 //                foreach ($row as $key => &$value) {
 //                    // Verificar si el valor es una cadena de texto y formatearlo
@@ -511,7 +511,7 @@ class FoxProRepository implements FoxProRepositoryInterface
           $pdf = PDF::loadView('pdf.historiaClinica', [
                 'data' => $data,
 //                'evol' => $dataE,
-//                'diag' => $diag,
+                'diag' => $diag,
 //                'diagS' => $diagSali,
 //                'imageBase64' => $imageBase64,
             ])->setPaper('legal', 'portrait');
