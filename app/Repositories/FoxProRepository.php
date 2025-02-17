@@ -411,7 +411,7 @@ class FoxProRepository implements FoxProRepositoryInterface
             $stmt = $pdo->query("
             SELECT d.depart, v.nombre as medico,v.num_id as ceddoc,v.regmed, e.nombre as especial, p.docn_sin, rt.docn, rt.num_id, s.nombre, s.nombre2, s.apellido1, s.apellido2, s.tipo_id, s.fech_nacim, s.edad, s.sexo, s.estad_civ, s.direccion, s.ciudad, s.telefono, s.nomb_resp, s.ocupacion,
                    rt.freg, rt.hora, rt.moti_solic, rt.reingre, rt.est_ingr, rt.enfer_act, rt.sv_ta as ta, rt.sv_fr as fr, rt.sv_tem as tem, rt.estembr as embri,
-                   rt.estcons, rt.glasglow, rt.cabeza, rt.cuello, rt.torax, rt.abdomen, rt.genitouri, rt.pelvis, rt.dorsoext, rt.neuro, rt.codigo
+                   rt.estcons, rt.glasglow, rt.cabeza, rt.cuello, rt.torax, rt.abdomen, rt.genitouri, rt.pelvis, rt.dorsoext, rt.neuro, rt.codigo, rt.evolucion, rt.examenes
             FROM $rehospit rt
             LEFT JOIN $sahisto s
             ON $documento = s.num_histo
@@ -502,23 +502,17 @@ class FoxProRepository implements FoxProRepositoryInterface
 //                }
 //            }
 
-//            $imagePath = 'Z:/GEMA_MEDICOS/GRAFICAS/firma' . strtolower($data[0]['codigo']) . '.bmp';
-//            $imageData = file_get_contents($imagePath);
-//            $base64Image = base64_encode($imageData);
-//            $imageBase64 = 'data:image/jpeg;base64,' . $base64Image;
+            $imagePath = 'Z:/GEMA_MEDICOS/GRAFICAS/firma' . strtolower($data[0]['codigo']) . '.bmp';
+            $imageData = file_get_contents($imagePath);
+            $base64Image = base64_encode($imageData);
+            $imageBase64 = 'data:image/jpeg;base64,' . $base64Image;
 
-
-          $pdf = PDF::loadView('pdf.historiaClinica', [
+            return [
                 'data' => $data,
-//                'evol' => $dataE,
                 'diag' => $diag,
-//                'diagS' => $diagSali,
-//                'imageBase64' => $imageBase64,
-            ])->setPaper('legal', 'portrait');
-
-            return $pdf->download('historia_hospitalizacion.pdf');
-
-            //return $data;
+                'imageBase64' => $imageBase64,
+                'status' => true
+            ];
         } catch (\Exception $e) {
             // En caso de error, maneja la excepción y devuelve una respuesta de error
             return response()->json([

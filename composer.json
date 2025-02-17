@@ -13,6 +13,7 @@
         "laravel/octane": "^2.6",
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
+        "mpdf/mpdf": "^8.2",
         "spiral/roadrunner-cli": "^2.6"
     },
     "require-dev": {

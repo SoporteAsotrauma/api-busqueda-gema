@@ -1,7 +1,4 @@
-@php
-    use Carbon\Carbon;
-@endphp
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -31,17 +28,17 @@
 
 <body>
 <div class="content">
-    <h3 style="margin-bottom: 1px;"><strong>Fecha: </strong>{{ $data['freg'] ?? ''}}</h3>
+    <h3 style="margin-bottom: 1px;"><strong>Fecha: </strong>2018-07-25</h3>
     <table width="100%" style="margin-bottom: 1px;">
         <tr>
             <td style="width: 120px;">
-                <p style="font-size: 13px; margin-bottom: 1px;">Registro: {{ $data['hora'] }}</p>
+                <p style="font-size: 13px; margin-bottom: 1px;">Registro: 10:28:44</p>
             </td>
             <td>
-                <p style="font-size: 12px; margin-bottom: 1px;"> (DR(A). {{ $data['codigo'] ?? '' }}
-                    - {{ $data['medico'] ?? ''}}
-                    -C.C. {{ $data['ceddoc'] ?? ''}}-REG.MEDICO: {{ $data['regmed'] ?? '' }}
-                    -{{ $data['especial'] ?? ''}}</p>
+                <p style="font-size: 12px; margin-bottom: 1px;"> (DR(A). BMU
+                    - URUNIA VASQUEZ BIBIANA MARCELA
+                    -C.C. 28542419-REG.MEDICO: 730625
+                    -MEDICINA DE URGENCIAS Y DOMICILIARIA</p>
             </td>
         </tr>
     </table>
@@ -50,22 +47,24 @@
             <strong>Motivo Consulta</strong>
         </p>
 
-        <p style="font-size: 13px; margin-bottom: 1px;">{{ $data['moti_solic'] ?? ''}}</p>
+        <p style="font-size: 13px; margin-bottom: 1px;">INGRESA A PROCEIDMIENTO QUIRURGICO</p>
 
         <p style="font-size: 13px; margin-bottom: 1px; display: inline; text-decoration: underline;">
             <strong>Reingreso</strong>
         </p>
-        <p style="font-size: 13px; margin-bottom: 1px;">{{ ($data['reingre'] ?? '') === 'S' ? 'SI' : 'NO' }}</p>
+        <p style="font-size: 13px; margin-bottom: 1px;">NO</p>
 
         <p style="font-size: 13px; margin-bottom: 1px; display: inline-block; text-decoration: underline;">
             <strong>Estado al ingreso</strong>
         </p>
-        <p style="font-size: 13px; margin-bottom: 1px;">{{ $data['est_ingr'] ?? '' }}</p>
+        <p style="font-size: 13px; margin-bottom: 1px;">ACEPTABLE ESTADO GENERAL SIN DIFICULTAD REPSIRATORI</p>
 
         <p style="font-size: 13px; margin-bottom: 1px; display: inline-block; text-decoration: underline;">
             <strong>Enfermedad actual</strong>
         </p>
-        <p style="font-size: 13px; margin-bottom: 1px;">{{ $data['enfer_act'] ?? ''}}</p>
+        <p style="font-size: 13px; margin-bottom: 1px;">INGRESA PARA ARTROSCOPIA RECONSTRUCCION LIGAMENTO CRUZADO ANTERRIO DERECHO 
+REFIERE ESTAR EN AYUNAS
+NO SINTOMAS REPSIRATORIOS</p>
     </div>
 
     <!-- Seccion examen fisico -->
@@ -81,11 +80,11 @@
     <table width="100%">
         <tr>
             <td style="font-size: 13px;"><strong>Signos Vitales </strong></td>
-            <td style="font-size: 13px;"><strong>FC: {{ $data['ta'] ?? ''}}</strong></td>
-            <td style="font-size: 13px;"><strong>FR: {{ $data['fr'] ?? ''}}</strong></td>
-            <td style="font-size: 13px;"><strong>Tmp: {{ $data['tem'] ?? ''}}</strong></td>
+            <td style="font-size: 13px;"><strong>FC: 100/60</strong></td>
+            <td style="font-size: 13px;"><strong>FR: 20</strong></td>
+            <td style="font-size: 13px;"><strong>Tmp: 36</strong></td>
             <td style="font-size: 13px;"><strong>Estado
-                    Embriaguez: </strong> {{ ($data['embri'] ?? '') === 'S' ? 'SI' : 'NO' }}</td>
+                    Embriaguez: </strong> NO</td>
         </tr>
         <tr>
             <td style="font-size: 13px; margin-bottom: 1px; vertical-align: middle;"><strong>Estado
@@ -97,7 +96,7 @@
                         <td style="padding-right: 6px;"><strong>Alerta:</strong></td>
                         <td style="width: 20px; height: 20px; border: 1px solid black; border-radius: 5px; text-align: center; vertical-align: middle;
                     display: inline-block; line-height: 20px;">
-                            {{ $data['estcons'] == 1 ? 'X' : '' }}
+                            X
                         </td>
                     </tr>
                 </table>
@@ -109,7 +108,7 @@
                         <td style="padding-right: 6px;"><strong>Obnibulado:</strong></td>
                         <td style="width: 20px; height: 20px; border: 1px solid black; border-radius: 5px; text-align: center; vertical-align: middle;
                     display: inline-block; line-height: 20px;">
-                            {{ $data['estcons'] == 2 ? 'X' : '' }}
+                            
                         </td>
                     </tr>
                 </table>
@@ -121,7 +120,7 @@
                         <td style="padding-right: 6px;"><strong>Estuporoso:</strong></td>
                         <td style="width: 20px; height: 20px; border: 1px solid black; border-radius: 5px; text-align: center; vertical-align: middle;
                     display: inline-block; line-height: 20px;">
-                            {{ $data['estcons'] == 3 ? 'X' : '' }}
+                            
                         </td>
                     </tr>
                 </table>
@@ -133,9 +132,9 @@
                         <td style="padding-right: 6px;"><strong>Coma:</strong></td>
                         <td style="width: 20px; height: 20px; border: 1px solid black; border-radius: 5px; text-align: center; vertical-align: middle;
                     display: inline-block; line-height: 20px;">
-                            {{ $data['estcons'] == 4 ? 'X' : '' }}
+                            
                         </td>
-                        <td style="padding-left: 8px;"><strong>Glasgow: ( {{ $data['glasglow'] }} )</strong></td>
+                        <td style="padding-left: 8px;"><strong>Glasgow: ( 15 )</strong></td>
                     </tr>
                 </table>
             </td>
@@ -145,39 +144,39 @@
         <p style="font-size: 13px; margin-bottom: 1px; display: inline-block; text-decoration: underline;">
             <strong>Cabeza y organos de los sentidos</strong>
         </p>
-        <p style="font-size: 13px; margin-bottom: 1px;">{{ $data['cabeza'] }}</p>
+        <p style="font-size: 13px; margin-bottom: 1px;">NORMOCEFALO SIN LESIONES</p>
 
         <p style="font-size: 13px; margin-bottom: 1px; display: inline-block; text-decoration: underline;">
             <strong>Cuello</strong>
         </p>
-        <p style="font-size: 13px; margin-bottom: 1px;">{{ $data['cuello'] ?? '' }}</p>
+        <p style="font-size: 13px; margin-bottom: 1px;">MOVIL SIN DOLOR</p>
 
         <p style="font-size: 13px; margin-bottom: 1px; display: inline-block; text-decoration: underline;">
             <strong>Torax</strong>
         </p>
-        <p style="font-size: 13px; margin-bottom: 1px;">{{ $data['torax'] }}</p>
+        <p style="font-size: 13px; margin-bottom: 1px;">SIMETRICO SIN LESIONES</p>
 
         <p style="font-size: 13px; margin-bottom: 1px; display: inline-block; text-decoration: underline;">
             <strong>Abdomen</strong>
         </p>
-        <p style="font-size: 13px; margin-bottom: 1px;">{{ $data['abdomen'] }}</p>
+        <p style="font-size: 13px; margin-bottom: 1px;">BLNDO, DEPRESIBLE, SIN DOLOR</p>
         <p style="font-size: 13px; margin-bottom: 1px; display: inline-block; text-decoration: underline;">
             <strong>Genitourinario</strong>
         </p>
-        <p style="font-size: 13px; margin-bottom: 1px;">{{ $data['genitouri'] }}</p>
+        <p style="font-size: 13px; margin-bottom: 1px;">NO SE REVISA</p>
         <p style="font-size: 13px; margin-bottom: 1px; display: inline-block; text-decoration: underline;">
             <strong>Pelvis</strong>
         </p>
-        <p style="font-size: 13px; margin-bottom: 1px;">{{ $data['pelvis'] }}</p>
+        <p style="font-size: 13px; margin-bottom: 1px;">ESTABLE SIN DOLOR</p>
 
         <p style="font-size: 13px; margin-bottom: 1px; display: inline-block; text-decoration: underline;">
             <strong>Dorsoext</strong>
         </p>
-        <p style="font-size: 13px; margin-bottom: 1px;">{{ $data['dorsoext'] }}</p>
+        <p style="font-size: 13px; margin-bottom: 1px;">BIEN PERFUNDIDAS SIN EDEMA</p>
         <p style="font-size: 13px; margin-bottom: 1px; display: inline-block; text-decoration: underline;">
             <strong>Neurologico</strong>
         </p>
-        <p style="font-size: 13px; margin-bottom: 1px;">{{ $data['neuro'] }}</p>
+        <p style="font-size: 13px; margin-bottom: 1px;">SIN DEFICIT</p>
 
         <div
             style="text-align: center; width: 100%; position: absolute; top: 88%; left: 50%; transform: translate(-50%, -50%);">
@@ -197,39 +196,11 @@
                     <p style="border-bottom:1px solid black; font-size: 13px; margin-bottom: 1px; font-weight: bold; display: inline-block;">
                         Diagnóstico de ingreso
                     </p>
-                    <p style="font-size: 13px; margin-bottom: 1px;">{{ $diag[0]['diag_ingre'] ?? '' }}
-                        -{{ $diag[0]['nombre_diag_ingre'] ?? '' }}</p>
+                    <p style="font-size: 13px; margin-bottom: 1px;">S835
+                        -ESGUINCES Y TORCEDURAS QUE COMPROMETEN EL LIGAMENTO CRUZADO (ANTERIOR) (POSTERIOR) DE LA RODILLA</p>
                 </td>
                 <td style="width: 50%; vertical-align: top;">
-                    @if(isset($diag[0]['nombre_diag_r1']) && $diag[0]['nombre_diag_r1'])
-                        <p style="border-bottom:1px solid black; font-size: 12px; margin-bottom: 1px; font-weight: bold; display: inline-block;">
-                            Diagnóstico relacionado 1
-                        </p>
-                        <p style="font-size: 12px; margin-bottom: 1px;">{{ $diag[0]['diag_in_r1'] }}
-                            -{{ $diag[0]['nombre_diag_r1'] }}</p>
-                    @endif
-                    @if(isset($diag[0]['nombre_diag_r2']) && $diag[0]['nombre_diag_r2'])
-                        <p style="border-bottom:1px solid black; font-size: 12px; margin-bottom: 1px; font-weight: bold; display: inline-block;">
-                            Diagnóstico relacionado 2
-                        </p>
-                        <p style="font-size: 12px; margin-bottom: 1px;">{{ $diag[0]['diag_in_r2'] }}
-                            -{{ $diag[0]['nombre_diag_r2'] }}</p>
-                    @endif
-                    @if(isset($diag[0]['nombre_diag_r3']) && $diag[0]['nombre_diag_r3'])
-                        <p style="border-bottom:1px solid black; font-size: 12px; margin-bottom: 1px; font-weight: bold; display: inline-block;">
-                            Diagnóstico relacionado 3
-                        </p>
-                        <p style="font-size: 12px; margin-bottom: 1px;">{{ $diag[0]['diag_in_r3'] }}
-                            -{{ $diag[0]['nombre_diag_r3'] }}</p>
-                    @endif
-                    @if(isset($diag[0]['nombre_diag_r4']) && $diag[0]['nombre_diag_r4'])
-                        <p style="border-bottom:1px solid black; font-size: 12px; margin-bottom: 1px; font-weight: bold; display: inline-block;">
-                            Diagnóstico relacionado 4
-                        </p>
-                        <p style="font-size: 12px; margin-bottom: 1px;">{{ $diag[0]['diag_in_r4'] }}
-                            -{{ $diag[0]['nombre_diag_r4'] }}</p>
-                    @endif
-                </td>
+                                                                                                </td>
             </tr>
         </table>
 
@@ -247,25 +218,36 @@
             <p style="font-size: 13px; margin-bottom: 1px; display: inline-block; text-decoration: underline;">
                 <strong>Evolucion</strong>
             </p>
-            <p style="font-size: 13px; margin-bottom: 1px;">{{ $data['evolucion'] }}</p>
+            <p style="font-size: 13px; margin-bottom: 1px;">PACIENTE A QUIEN EL DR GOMEZ BAJO ANESTESIA REGIONAL DR ZAFRA REALIZA ARTROSCOPIA Y REOCNSTRUCCION DE LIGAMENTO CRUZADO ANTERIO RODILLA DERECHA SIN COMPLICACIONES
+
+AL EXAMEN FISICO FC 74/MIN,  TA 100/70, FR 18/MIN
+HIDRATADO, AFEBRIL, SIN  SIGNSO DE DIFICULTAD RESPIRATORIA
+MUCOSA SHUMEDAS NORMOCROMICAS
+C/P NORMAL SIN AGREGADOS
+ABDOMEN SIN MASA SNI DOLOR
+EXTREMIDADES MIEMBRO INFERIOR DERECHO CON VENDAJE BLANDO, PERFUSION DISTAL ADCUADA PULSOS SIMETRICOS
+
+EGRESO CON FORMULA, INCAPACIDAD ESCOLAR
+RX CONTROL
+USO DE MULETAS
+CUIDADOS DE HERIDA RECOMENDAICONE SY SIGNSO DE ALARMA</p>
 
             <p style="font-size: 13px; margin-bottom: 1px; display: inline-block; text-decoration: underline;">
                 <strong>Examenes/Estudios Solicitados</strong>
             </p>
-            <p style="font-size: 13px; margin-bottom: 1px;">{{ $data['examenes'] }}</p>
+            <p style="font-size: 13px; margin-bottom: 1px;">RX RODILLA, AP-LATERALJUSTIFICACIONCONTROL</p>
 
         </div>
     </div>
 </div>
-<img src="{{ $imageBase64 }}" alt="Firma" style="width: 150px; height: auto;">
 <div>
 
     <p style="margin-top: 0; margin-bottom: 3px;">_________________________</p>
     <p style="font-size: 12px; margin-top: 0; margin-bottom: 2px;">
-        <strong>Dr. {{ $data['medico'] ?? 'N/A' }}</strong></p>
+        <strong>Dr. URUNIA VASQUEZ BIBIANA MARCELA</strong></p>
     <p style="font-size: 12px; margin-top: 0; margin-bottom: 2px;"><strong>Registro
-            Médico: {{ $data['regmed'] ?? 'N/A' }}</strong></p>
-    <p style="font-size: 12px; margin-top: 0; margin-bottom: 2px;"><strong>CC - {{ $data['ceddoc'] }}</strong>
+            Médico: 730625</strong></p>
+    <p style="font-size: 12px; margin-top: 0; margin-bottom: 2px;"><strong>CC - 28542419</strong>
     </p>
     <div style="page-break-before: always;"></div>
     <div class="content">
@@ -284,5 +266,6 @@
                 _________________________________________________________________________</strong></p>
     </div>
 </div>
+
 </body>
 </html>
