@@ -258,10 +258,12 @@ class FoxProRepository implements FoxProRepositoryInterface
     public function historiaUrgencias(string $documento, string $mes, string $año)
     {
         $pdo = ConnectionFox::con();
-
+        $vendedor = "Z:\\GEMA10.D\\DGEN\\DATOS\\VENDEDOR";
+        $especial = "Z:\GEMA10.d\SALUD\DATOS\Especial";
         // Función para convertir y formatear solo textos
-        $c = fn($s) => $s !== null && is_string($s) ? trim(mb_convert_encoding($s, "UTF-8", "CP1252")) : $s;
-
+        $c = fn($s) => $s !== null && is_string($s)
+            ? nl2br(trim(mb_convert_encoding($s, "UTF-8", "CP1252")))
+            : $s;
         try {
             // Ejecuta la consulta SQL
             $stmt = $pdo->query("
@@ -270,7 +272,7 @@ class FoxProRepository implements FoxProRepositoryInterface
      o.nombre as ocupacion, d.depart, re.es_obs, re.es_act, re.freg as fechare, re.hora as horare, re.moti_solic,
      re.reingre, re.est_ingr, re.enfer_act, re.rev_sis, re.sv_ta as ta, re.sv_tem as tem, re.sv_fc as fc,
      re.sv_fr as fr, re.estembr as embri, re.glasglow, re.estcons, re.cabeza, re.cuello, re.torax,
-     re.abdomen, re.genitouri, re.pelvis, re.dorsoext, re.neuro, re.plan, re.examenes, re.tratami
+     re.abdomen, re.genitouri, re.pelvis, re.dorsoext, re.neuro, re.plan, re.examenes, re.tratami, re.evolucion, re.res_exam, re.hora, re.piel, re.faneras
     FROM GEMA_MEDICOS\\DATOS\\RE_HURGE re
     LEFT JOIN `Z:\\GEMA10.D\\DGEN\\DATOS\\VENDEDOR` v
         ON re.codigo = v.vendedor
@@ -328,61 +330,59 @@ class FoxProRepository implements FoxProRepositoryInterface
 ");
 
             $stmtE = $pdo->query("
-                SELECT ree.plan, ree.evolucion
+                SELECT ree.plan, ree.evolucion, ree.examenes, ree.res_exam, ree.tratami, ree.codigo, ree.hora, v.nombre as medico, v.num_id as ceddoc, v.regmed, e.nombre as especial
                 FROM GEMA_MEDICOS\\DATOS\\RE_HURGE re
                 LEFT JOIN GEMA_MEDICOS\\DATOS\\RE_HURGEE ree
                 ON re.docn = ree.docn
+                LEFT JOIN $vendedor v
+                ON ree.codigo = v.vendedor
+                LEFT JOIN $especial e
+                ON v.especial = e.codigo
                 WHERE re.num_id = $documento AND MONTH(re.freg) = $mes AND YEAR(re.freg) = $año");
 
             // Obtiene los resultados como un array asociativo
-            $data = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+            $data = $stmt->fetch(\PDO::FETCH_ASSOC);
             $dataE = $stmtE->fetchAll(\PDO::FETCH_ASSOC);
             $diag = $stmtDiag->fetchAll(\PDO::FETCH_ASSOC);
             $diagSali = $stmtDiagSali->fetchAll(\PDO::FETCH_ASSOC);
 
             // Formatea solo las columnas de texto
-            foreach ($data as &$row) {
-                foreach ($row as $key => &$value) {
-                    // Verificar si el valor es una cadena de texto y formatearlo
-                    $value = $c($value);
-                }
+            foreach ($data as $key => &$value) {
+                $value = $c($value);
             }
+
             foreach ($dataE as &$row) {
                 foreach ($row as $key => &$value) {
-                    // Verificar si el valor es una cadena de texto y formatearlo
-                    $value = $c($value);
-                }
-            }
-            foreach ($diag as &$row) {
-                foreach ($row as $key => &$value) {
-                    // Verificar si el valor es una cadena de texto y formatearlo
-                    $value = $c($value);
-                }
-            }
-            foreach ($diagSali as &$row) {
-                foreach ($row as $key => &$value) {
-                    // Verificar si el valor es una cadena de texto y formatearlo
                     $value = $c($value);
                 }
             }
 
-            $imagePath = 'Z:/GEMA_MEDICOS/GRAFICAS/firma' . strtolower($data[0]['codigo']) . '.bmp';
+            foreach ($diag as &$row) {
+                foreach ($row as $key => &$value) {
+                    $value = $c($value);
+                }
+            }
+
+            foreach ($diagSali as &$row) {
+                foreach ($row as $key => &$value) {
+                    $value = $c($value);
+                }
+            }
+
+            $imagePath = 'Z:/GEMA_MEDICOS/GRAFICAS/firma' . strtolower($data['codigo']) . '.bmp';
             $imageData = file_get_contents($imagePath);
             $base64Image = base64_encode($imageData);
             $imageBase64 = 'data:image/jpeg;base64,' . $base64Image;
 
 
-            $pdf = PDF::loadView('pdf.historia', [
+            return [
                 'data' => $data,
-                'evol' => $dataE,
+                'dataE' => $dataE,
                 'diag' => $diag,
-                'diagS' => $diagSali,
+                'diagSali' => $diagSali,
                 'imageBase64' => $imageBase64,
-            ])->setPaper('legal', 'portrait');
-
-            return $pdf->download('historia_urgencias.pdf');
-
-            //return $data;
+                'status' => true
+            ];
         } catch (\Exception $e) {
             // En caso de error, maneja la excepción y devuelve una respuesta de error
             return response()->json([

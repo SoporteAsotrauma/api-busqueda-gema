@@ -4,6 +4,7 @@ $type = pathinfo($path, PATHINFO_EXTENSION);
 $img = file_get_contents($path);
 $base64 = 'data:image/' . $type . ';base64,' . base64_encode($img);
 ?>
+
 <div class="header" style="padding-bottom: 20px;">
     <table width="100%" style="border-collapse: collapse;">
         <tr>

@@ -24,7 +24,6 @@
         th {
             text-align: center;
         }
-
     </style>
 </head>
 
@@ -271,8 +270,6 @@
                 </table>
             @endif
         </div>
-
-
         <!-- Evoluciones -->
             <div>
                 @php
@@ -402,8 +399,6 @@
     <p style="font-size: 12px; margin-top: 0; margin-bottom: 2px;">
         <strong>CC - {!! $data['ceddoc'] ?? 'N/A' !!}</strong>
     </p>
-
-    <div style="page-break-before: always;"></div>
 
     <div class="content">
         <p style="font-size: 12px; text-align: center;">

@@ -221,22 +221,82 @@ class FoxProController extends Controller
 
     public function historiaUrgencias(Request $request)
     {
-        // Obtener el parámetro "documento" desde la consulta
-        $documento = $request->query('documento');
-        $mes = $request->query('mes');
-        $año = $request->query('año');
+        try {
+            $documento = $request->query('documento');
+            $mes = $request->query('mes');
+            $año = $request->query('año');
 
-        // Verificar que el parámetro "documento" esté presente
-        if (!$documento) {
+            if (!$documento) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'El parámetro "documento" es requerido.',
+                ], 400);
+            }
+
+            // Llamar al servicio
+            $response = $this->foxProService->historiaUrgencias($documento, $mes, $año);
+
+            // Si la respuesta es un objeto JsonResponse, convertirlo en array
+            if ($response instanceof \Illuminate\Http\JsonResponse) {
+                $data = $response->getData(true);
+            } else {
+                $data = $response; // La respuesta ya es un array válido
+            }
+
+            // Verificar si la estructura de datos es correcta
+            if (!isset($data['data']) || !isset($data['status'])) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Estructura de datos inesperada en la respuesta del servicio.',
+                    'data' => $data, // Mostrar la estructura que se recibió
+                ], 500);
+            }
+
+            // Preparar los datos para la vista del PDF
+            $pdfData = [
+                'data' => $data['data'],
+                'dataE' => $data['dataE'],
+                'diag' => $data['diag'] ?? [], // Si diag no existe, usa un array vacío
+                'diagS' => $data['diagSali'],
+                'status' => $data['status'],
+                'imageBase64' => $data['imageBase64'] ?? null,
+            ];
+
+            // Cargar la vista HTML con los datos
+            $html = view('pdf.historiaUrgencias', $pdfData)->render();
+
+            // ⚠️ Guardar HTML para depuración
+            file_put_contents(storage_path('pdf_debug_urgencias.html'), $html);
+
+            // Validar si el HTML está vacío
+            if (empty(trim($html))) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'El HTML generado para el PDF está vacío.',
+                ], 500);
+            }
+
+            // Crear una instancia de mPDF
+            $mpdf = new \Mpdf\Mpdf([
+                'margin_top' => 70, // Espacio por encima del contenido
+                'margin_bottom' => 10, // Espacio en la parte inferior
+                'margin_left' => 15, // Espacio izquierdo
+                'margin_right' => 15 // Espacio derecho
+            ]);
+            $mpdf->SetHTMLHeader(view('pdf.headerU', $pdfData)->render());  // Aquí cargamos la vista header.blade.php
+            $html = view('pdf.historiaUrgencias', $pdfData)->render();
+
+            $mpdf->WriteHTML($html);
+
+            // Generar y mostrar el PDF
+            return $mpdf->Output('historia_urgencias_' . $documento . '.pdf', 'I');
+
+        } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'El parámetro "documento" es requerido.',
-            ], 400);
+                'message' => 'Error al generar el PDF: ' . $e->getMessage(),
+            ], 500);
         }
-
-
-        return $this->foxProService->historiaUrgencias($documento, $mes, $año); // Esto te permitirá ver la estructura real en Postman
-
     }
 
     public function historiaClinica(Request $request)
