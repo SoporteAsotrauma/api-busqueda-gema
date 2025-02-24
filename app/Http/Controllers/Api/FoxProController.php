@@ -275,9 +275,14 @@ class FoxProController extends Controller
             // Preparar los datos para la vista del PDF
             $pdfData = [
                 'data' => $data['data'],
+                'dataE' => $data['dataE'],
                 'diag' => $data['diag'] ?? [], // Si diag no existe, usa un array vacío
-                'status' => $data['status']
+                'diagS' => $data['diagSali'],
+                'status' => $data['status'],
+                'imageBase64' => $data['imageBase64'] ?? null,
             ];
+
+            //return $pdfData;
 
             // Cargar la vista HTML con los datos
             $html = view('pdf.historiaClinica', $pdfData)->render();
