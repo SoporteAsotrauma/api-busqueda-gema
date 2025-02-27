@@ -382,4 +382,87 @@ class FoxProController extends Controller
         }
     }
 
+    public function historiaUti(Request $request)
+    {
+        try {
+            $documento = $request->query('documento');
+            $mes = $request->query('mes');
+            $año = $request->query('año');
+
+            if (!$documento) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'El parámetro "documento" es requerido.',
+                ], 400);
+            }
+
+            // Llamar al servicio
+            $response = $this->foxProService->historiaUti($documento, $mes, $año);
+
+            // Si la respuesta es un objeto JsonResponse, convertirlo en array
+            if ($response instanceof \Illuminate\Http\JsonResponse) {
+                $data = $response->getData(true);
+            } else {
+                $data = $response; // La respuesta ya es un array válido
+            }
+
+            // Verificar si la estructura de datos es correcta
+            if (!isset($data['data']) || !isset($data['status'])) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Estructura de datos inesperada en la respuesta del servicio.',
+                    'data' => $data, // Mostrar la estructura que se recibió
+                ], 500);
+            }
+
+            // Preparar los datos para la vista del PDF
+            $pdfData = [
+                'data' => $data['data'],
+                'dataE' => $data['dataE'],
+                'diag' => $data['diag'] ?? [], // Si diag no existe, usa un array vacío
+                'diagS' => $data['diagSali'],
+                'status' => $data['status'],
+                'imageBase64' => $data['imageBase64'] ?? null,
+            ];
+
+            //return $pdfData;
+
+            // Cargar la vista HTML con los datos
+            $html = view('pdf.historiaClinica', $pdfData)->render();
+
+            // ⚠️ Guardar HTML para depuración
+            file_put_contents(storage_path('pdf_debug.html'), $html);
+
+            // Validar si el HTML está vacío
+            if (empty(trim($html))) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'El HTML generado para el PDF está vacío.',
+                ], 500);
+            }
+
+            // Crear una instancia de mPDF
+            $mpdf = new \Mpdf\Mpdf([
+                'margin_top' => 70, // Espacio por encima del contenido
+                'margin_bottom' => 10, // Espacio en la parte inferior
+                'margin_left' => 15, // Espacio izquierdo
+                'margin_right' => 15 // Espacio derecho
+            ]);
+            $mpdf->SetHTMLHeader(view('pdf.headerUti', $pdfData)->render());  // Aquí cargamos la vista header.blade.php
+            $html = view('pdf.historiaClinica', $pdfData)->render();
+            $mpdf->WriteHTML($html);
+
+            // Generar y mostrar el PDF
+            return $mpdf->Output('historia_clinica_' . $documento . '.pdf', 'I');
+            //return $pdfData;
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Error al generar el PDF: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
+
+
 }

@@ -531,5 +531,144 @@ class FoxProRepository implements FoxProRepositoryInterface
             ], 500);
         }
     }
+    public function historiaUti(string $documento, string $mes, string $año)
+    {
+        $pdo = ConnectionFox::con();
+        $rehospit = "Z:\GEMA_MEDICOS\DATOS\RE_Hospit";
+        $ptotc00 = "Z:\GEMA10.D\IPT\DATOS\PTOTC00";
+        $sahisto = "Z:\\GEMA10.D\\SALUD\\DATOS\\SAHISTOC";
+        $vendedor = "Z:\\GEMA10.D\\DGEN\\DATOS\\VENDEDOR";
+        $especial = "Z:\GEMA10.d\SALUD\DATOS\Especial";
+        $depar = "Z:\GEMA10.d\DGEN\DATOS\departam";
+        $muni = "Z:\GEMA10.d\DGEN\DATOS\municip";
+
+        // Función para convertir y formatear solo textos
+        $c = fn($s) => $s !== null && is_string($s)
+            ? nl2br(trim(mb_convert_encoding($s, "UTF-8", "CP1252")))
+            : $s;
+
+        try {
+            //Ejecuta la consulta SQL
+            $stmt = $pdo->query("
+            SELECT d.depart, v.nombre as medico,v.num_id as ceddoc,v.regmed, e.nombre as especial, p.docn_sin, rt.docn, rt.num_id, s.nombre, s.nombre2, s.apellido1, s.apellido2, s.tipo_id, s.fech_nacim, s.edad, s.sexo, s.estad_civ, s.direccion, s.ciudad, s.telefono, s.nomb_resp, s.ocupacion,
+                   rt.freg, rt.hora, rt.moti_solic, rt.reingre, rt.est_ingr, rt.enfer_act, rt.sv_ta as ta, rt.sv_fr as fr, rt.sv_tem as tem, rt.estembr as embri,
+                   rt.estcons, rt.glasglow, rt.cabeza, rt.cuello, rt.torax, rt.abdomen, rt.genitouri, rt.pelvis, rt.dorsoext, rt.neuro, rt.codigo, rt.evolucion, rt.examenes, rt.dest_sali, rt.serv_sali, rt.fecha_egr, rt.hora_egr,
+                   rt.est_salida, rt.dias_inca, rt.conducta, rt.res_exam, rt.tratami
+            FROM $rehospit rt
+            LEFT JOIN $sahisto s
+            ON $documento = s.num_histo
+            LEFT JOIN $ptotc00 p
+            ON rt.docn = p.docn
+            LEFT JOIN $vendedor v
+            ON rt.codigo = v.vendedor
+            LEFT JOIN $especial e
+            ON v.especial = e.codigo
+            LEFT JOIN $muni m
+            ON s.ciudad = m.nombre
+            LEFT JOIN $depar d
+            ON m.depto = d.depart
+            WHERE rt.num_id = $documento
+            AND MONTH(rt.freg) = $mes
+            AND YEAR(rt.freg) = $año
+            ORDER BY rt.freg DESC
+");
+            $stmtDiag = $pdo->query("
+    SELECT re.diag_ingre, ci1.nombre AS nombre_diag_ingre,
+           re.diag_in_r1, ci2.nombre AS nombre_diag_r1,
+           re.diag_in_r2, ci3.nombre AS nombre_diag_r2,
+           re.diag_in_r3, ci4.nombre AS nombre_diag_r3,
+           re.diag_in_r4, ci5.nombre AS nombre_diag_r4
+    FROM $rehospit re
+    LEFT JOIN Z:\\GEMA10.d\\SALUD\\DATOS\\cie9 ci1 ON re.diag_ingre = ci1.codigo
+    LEFT JOIN Z:\\GEMA10.d\\SALUD\\DATOS\\cie9 ci2 ON re.diag_in_r1 = ci2.codigo
+    LEFT JOIN Z:\\GEMA10.d\\SALUD\\DATOS\\cie9 ci3 ON re.diag_in_r2 = ci3.codigo
+    LEFT JOIN Z:\\GEMA10.d\\SALUD\\DATOS\\cie9 ci4 ON re.diag_in_r3 = ci4.codigo
+    LEFT JOIN Z:\\GEMA10.d\\SALUD\\DATOS\\cie9 ci5 ON re.diag_in_r4 = ci5.codigo
+    WHERE re.num_id = $documento
+    AND MONTH(re.freg) = $mes
+    AND YEAR(re.freg) = $año
+");
+            $stmtDiagSali = $pdo->query("
+    SELECT
+        re.diag_salid, ci6.nombre AS nombre_diag_salid,
+        re.diag_sali1, ci7.nombre AS nombre_diag_s1,
+        re.diag_sali2, ci8.nombre AS nombre_diag_s2,
+        re.diag_sali3, ci9.nombre AS nombre_diag_s3,
+        re.diag_sali4, ci10.nombre AS nombre_diag_s4
+    FROM GEMA_MEDICOS/DATOS/RE_HOSPIT re
+    LEFT JOIN Z:/GEMA10.d/SALUD/DATOS/cie9 ci6 ON re.diag_salid = ci6.codigo
+    LEFT JOIN Z:/GEMA10.d/SALUD/DATOS/cie9 ci7 ON re.diag_sali1 = ci7.codigo
+    LEFT JOIN Z:/GEMA10.d/SALUD/DATOS/cie9 ci8 ON re.diag_sali2 = ci8.codigo
+    LEFT JOIN Z:/GEMA10.d/SALUD/DATOS/cie9 ci9 ON re.diag_sali3 = ci9.codigo
+    LEFT JOIN Z:/GEMA10.d/SALUD/DATOS/cie9 ci10 ON re.diag_sali4 = ci10.codigo
+    WHERE re.num_id = $documento
+    AND MONTH(re.freg) = $mes
+    AND YEAR(re.freg) = $año
+");
+
+            $stmtE = $pdo->query("
+                SELECT ree.conducta, ree.evolucion, ree.examenes, ree.res_exam, ree.tratami, ree.codigo, ree.hora, v.nombre as medico, v.num_id as ceddoc, v.regmed, e.nombre as especial
+                FROM GEMA_MEDICOS\\DATOS\\RE_HOSPIT re
+                LEFT JOIN GEMA_MEDICOS\\DATOS\\RE_HOSPITE ree
+                ON re.docn = ree.docn
+                LEFT JOIN $vendedor v
+                ON ree.codigo = v.vendedor
+                LEFT JOIN $especial e
+                ON v.especial = e.codigo
+                WHERE re.num_id = $documento AND MONTH(re.freg) = $mes AND YEAR(re.freg) = $año");
+
+//            // Obtiene los resultados como un array asociativo
+            $data = $stmt->fetch(\PDO::FETCH_ASSOC);
+            $dataE = $stmtE->fetchAll(\PDO::FETCH_ASSOC);
+            $diag = $stmtDiag->fetchAll(\PDO::FETCH_ASSOC);
+            $diagSali = $stmtDiagSali->fetchAll(\PDO::FETCH_ASSOC);
+
+            // Formatea solo las columnas de texto
+            foreach ($data as $key => &$value) {
+                $value = $c($value);
+            }
+
+            foreach ($dataE as &$row) {
+                foreach ($row as $key => &$value) {
+                    $value = $c($value);
+                }
+            }
+
+            foreach ($diag as &$row) {
+                foreach ($row as $key => &$value) {
+                    $value = $c($value);
+                }
+            }
+
+            foreach ($diagSali as &$row) {
+                foreach ($row as $key => &$value) {
+                    $value = $c($value);
+                }
+            }
+
+            $imagePath = 'Z:/GEMA_MEDICOS/GRAFICAS/firma' . strtolower($data['codigo']) . '.bmp';
+            $imageData = file_get_contents($imagePath);
+            $base64Image = base64_encode($imageData);
+            $imageBase64 = 'data:image/bmp;base64,' . $base64Image;
+
+//            return $dataE;
+            return [
+                'data' => $data,
+                'dataE' => $dataE,
+                'diag' => $diag,
+                'diagSali' => $diagSali,
+                'imageBase64' => $imageBase64,
+                'status' => true
+            ];
+        } catch (\Exception $e) {
+            // En caso de error, maneja la excepción y devuelve una respuesta de error
+            return response()->json([
+                'status' => 'error',
+                'error' => $e->getMessage(),
+                'message' => 'Hubo un problema al ejecutar la consulta',
+            ], 500);
+        }
+    }
+
 
 }
