@@ -428,7 +428,7 @@ class FoxProController extends Controller
             //return $pdfData;
 
             // Cargar la vista HTML con los datos
-            $html = view('pdf.historiaClinica', $pdfData)->render();
+            $html = view('pdf.historiaUti', $pdfData)->render();
 
             // ⚠️ Guardar HTML para depuración
             file_put_contents(storage_path('pdf_debug.html'), $html);
@@ -449,11 +449,11 @@ class FoxProController extends Controller
                 'margin_right' => 15 // Espacio derecho
             ]);
             $mpdf->SetHTMLHeader(view('pdf.headerUti', $pdfData)->render());  // Aquí cargamos la vista header.blade.php
-            $html = view('pdf.historiaClinica', $pdfData)->render();
+            $html = view('pdf.historiaUti', $pdfData)->render();
             $mpdf->WriteHTML($html);
 
             // Generar y mostrar el PDF
-            return $mpdf->Output('historia_clinica_' . $documento . '.pdf', 'I');
+            return $mpdf->Output('historia_uti_' . $documento . '.pdf', 'I');
             //return $pdfData;
 
         } catch (\Exception $e) {

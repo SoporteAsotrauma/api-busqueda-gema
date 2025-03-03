@@ -37,34 +37,31 @@
             </td>
             <td>
                 <p style="font-size: 12px; margin-bottom: 1px;">
-                    (DR(A). {!! $data['codigo'] ?? '' !!} - {!! $data['medico'] ?? '' !!} - C.C. {!! $data['ceddoc'] ?? '' !!}
+                    (DR(A). {!! $data['codigo'] ?? '' !!} - {!! $data['medico'] ?? '' !!} -
+                    C.C. {!! $data['ceddoc'] ?? '' !!}
                     - REG.MEDICO: {!! $data['regmed'] ?? '' !!} - {!! $data['especial'] ?? '' !!})
                 </p>
             </td>
         </tr>
     </table>
+    @php
+        $fields = [
+            'moti_solic' => 'Motivo Consulta',
+            'est_ingr' => 'Estado al ingreso',
+            'enfer_act' => 'Enfermedad actual',
+        ];
+    @endphp
+
     <div>
-        <p style="font-size: 13px; text-decoration: underline; display: inline-block;">
-            <strong>Motivo Consulta</strong>
-        </p>
-        <p style="font-size: 13px; margin-bottom: 1px;">{!! $data['moti_solic'] ?? '' !!}</p>
-
-        <p style="font-size: 13px; text-decoration: underline; display: inline-block;">
-            <strong>Reingreso</strong>
-        </p>
-        <p style="font-size: 13px; margin-bottom: 1px;">{!! ($data['reingre'] ?? '') === 'S' ? 'SI' : 'NO' !!}</p>
-
-        <p style="font-size: 13px; text-decoration: underline; display: inline-block;">
-            <strong>Estado al ingreso</strong>
-        </p>
-        <p style="font-size: 13px; margin-bottom: 1px;">{!! $data['est_ingr'] ?? '' !!}</p>
-
-        <p style="font-size: 13px; text-decoration: underline; display: inline-block;">
-            <strong>Enfermedad actual</strong>
-        </p>
-        <p style="font-size: 13px; margin-bottom: 1px;">{!! $data['enfer_act'] ?? '' !!}</p>
+        @foreach ($fields as $key => $label)
+            @if (!empty($data[$key]))
+                <p style="font-size: 13px; text-decoration: underline; display: inline-block;">
+                    <strong>{{ $label }}</strong>
+                </p>
+                <p style="font-size: 13px; margin-bottom: 1px;">{!! $data[$key] !!}</p>
+            @endif
+        @endforeach
     </div>
-
 
     <!-- Seccion examen fisico -->
     <h3 style="
@@ -79,54 +76,41 @@
     <table width="100%">
         <tr>
             <td style="font-size: 13px;"><strong>Signos Vitales </strong></td>
+            <td style="font-size: 13px;"><strong>T.SIST: {!! $data['tsist']?? '' !!}</strong></td>
+            <td style="font-size: 13px;"><strong>T.DIAS: </strong>{!! $data['tdia']?? ''!!}</td>
+            <td style="font-size: 13px;"><strong>MEDIA: </strong>{!! $data['tmed']?? ''!!}</td>
             <td style="font-size: 13px;"><strong>FC: {!! $data['ta'] ?? '' !!}</strong></td>
             <td style="font-size: 13px;"><strong>FR: {!! $data['fr'] ?? '' !!}</strong></td>
-            <td style="font-size: 13px;"><strong>Tmp: {!! $data['tem'] ?? '' !!}</strong></td>
-            <td style="font-size: 13px;"><strong>Estado Embriaguez: </strong> {!! ($data['embri'] ?? '') === 'S' ? 'SI' : 'NO' !!}</td>
         </tr>
         <tr>
-            <td style="font-size: 13px; margin-bottom: 1px; vertical-align: middle;"><strong>Estado Conciencia</strong></td>
-            <td style="font-size: 13px; vertical-align: middle;">
-                <table style="border-collapse: collapse;">
-                    <tr>
-                        <td style="padding-right: 6px;"><strong>Alerta:</strong></td>
-                        <td style="width: 20px; height: 20px; border: 1px solid black; border-radius: 5px; text-align: center; vertical-align: middle; display: inline-block; line-height: 20px;">
-                            {!! $data['estcons'] == 1 ? 'X' : '' !!}
-                        </td>
-                    </tr>
-                </table>
+            <td style="font-size: 13px;"><strong>Tmp: {!! $data['tem'] ?? '' !!}</strong></td>
+            <td style="font-size: 13px;"><strong>ST 02: {!! $data['o2'] ?? '' !!}</strong></td>
+            <td style="font-size: 13px;"><strong>Peso: {!! $data['peso'] ?? '' !!}</strong></td>
+            <td style="font-size: 13px;"><strong>Talla: {!! $data['talla'] ?? '' !!}</strong></td>
+            <td style="font-size: 13px;"><strong>Imc: {!! $data['imc'] ?? '' !!}</strong></td>
+        </tr>
+        <tr>
+            <td style="font-size: 13px;">
+                <strong>Glasgow: ( {!! $data['glasglow'] ?? '' !!} )</strong>
+            </td> @php
+                $estados = [
+                    1 => 'Alerta',
+                    2 => 'Obnubilado',
+                    3 => 'Estuporoso',
+                    4 => 'Coma'
+                ];
+            @endphp
+            <td style="font-size: 13px;">
+                <strong>Estado: {{ $estados[$data['estcons'] ?? 0] ?? '' }}</strong>
             </td>
-            <td style="font-size: 13px; vertical-align: middle;">
-                <table style="border-collapse: collapse;">
-                    <tr>
-                        <td style="padding-right: 6px;"><strong>Obnibulado:</strong></td>
-                        <td style="width: 20px; height: 20px; border: 1px solid black; border-radius: 5px; text-align: center; vertical-align: middle; display: inline-block; line-height: 20px;">
-                            {!! $data['estcons'] == 2 ? 'X' : '' !!}
-                        </td>
-                    </tr>
-                </table>
+            @php
+                $embriMap = ['s' => 'Sí', 'n' => 'No'];
+            @endphp
+
+            <td style="font-size: 13px;">
+                <strong>P.Embri: ( {{ $embriMap[$data['embri'] ?? ''] ?? '' }} )</strong>
             </td>
-            <td style="font-size: 13px; vertical-align: middle;">
-                <table style="border-collapse: collapse;">
-                    <tr>
-                        <td style="padding-right: 6px;"><strong>Estuporoso:</strong></td>
-                        <td style="width: 20px; height: 20px; border: 1px solid black; border-radius: 5px; text-align: center; vertical-align: middle; display: inline-block; line-height: 20px;">
-                            {!! $data['estcons'] == 3 ? 'X' : '' !!}
-                        </td>
-                    </tr>
-                </table>
-            </td>
-            <td style="font-size: 13px; vertical-align: middle; white-space: nowrap;">
-                <table style="border-collapse: collapse;">
-                    <tr>
-                        <td style="padding-right: 6px;"><strong>Coma:</strong></td>
-                        <td style="width: 20px; height: 20px; border: 1px solid black; border-radius: 5px; text-align: center; vertical-align: middle; display: inline-block; line-height: 20px;">
-                            {!! $data['estcons'] == 4 ? 'X' : '' !!}
-                        </td>
-                        <td style="padding-left: 8px;"><strong>Glasgow: ( {!! $data['glasglow'] ?? '' !!} )</strong></td>
-                    </tr>
-                </table>
-            </td>
+            <td><strong>Gases: </strong>{!! $data['gases'] !!}</td>
         </tr>
     </table>
     <div>
@@ -134,7 +118,6 @@
             'cabeza' => 'Cabeza y órganos de los sentidos',
             'cuello' => 'Cuello',
             'torax' => 'Tórax',
-            'abdomen' => 'Abdomen',
             'genitouri' => 'Genitourinario',
             'pelvis' => 'Pelvis',
             'dorsoext' => 'Dorsoext',
@@ -170,16 +153,21 @@
                     </p>
                 </td>
                 <td style="width: 50%; vertical-align: top;">
-                    @foreach ([1, 2, 3, 4] as $i)
-                        @if (!empty($diag[0]["nombre_diag_r$i"]))
-                            <p style="border-bottom:1px solid black; font-size: 12px; margin-bottom: 1px; font-weight: bold; display: inline-block;">
-                                Diagnóstico relacionado {{ $i }}
-                            </p>
-                            <p style="font-size: 12px; margin-bottom: 1px;">
-                                {!! $diag[0]["diag_in_r$i"] ?? '' !!} - {!! $diag[0]["nombre_diag_r$i"] ?? '' !!}
-                            </p>
-                        @endif
-                    @endforeach
+                    <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                        @foreach ([1, 2, 3, 4] as $i)
+                            @if (!empty($diag[0]["nombre_diag_r$i"]))
+                                <div
+                                    style="width: 48%; border-bottom: 1px solid black; font-size: 12px; margin-bottom: 5px;">
+                                    <p style="font-weight: bold; margin-bottom: 2px;">
+                                        Diagnóstico relacionado {{ $i }}
+                                    </p>
+                                    <p style="margin-bottom: 2px;">
+                                        {!! $diag[0]["diag_in_r$i"] ?? '' !!} - {!! $diag[0]["nombre_diag_r$i"] !!}
+                                    </p>
+                                </div>
+                            @endif
+                        @endforeach
+                    </div>
                 </td>
             </tr>
         </table>
@@ -194,22 +182,21 @@
            margin: auto auto 1px;">
             <strong>ANALISIS-PLAN-EXAMENES-PROCEDIMIENTOS-TRATAMIENTOS</strong>
         </h3>
-            <div>
-                @foreach ([
-                    'evolucion' => 'Evolución',
-                    'conducta' => 'Plan/Conducta',
-                    'examenes' => 'Exámenes/Estudios Solicitados',
-                    'res_exam' => 'Resultado de Exámenes/Estudios',
-                    'tratami' => 'Prescripciones/Tratamientos'
-                ] as $key => $title)
-                    @if (!empty($data[$key]))
-                        <p style="font-size: 13px; margin-bottom: 3px; text-decoration: underline;">
-                            <strong>{!! $title !!}</strong>
-                        </p>
-                        <p style="font-size: 13px; margin-bottom: 8px;">{!! $data[$key] !!}</p>
-                    @endif
-                @endforeach
-            </div>
+        <div>
+            @foreach ([
+                'conducta' => 'Plan/Conducta',
+                'examenes' => 'Exámenes/Estudios Solicitados',
+                'res_exam' => 'Resultado de Exámenes/Estudios',
+                'tratami' => 'Prescripciones/Tratamientos'
+            ] as $key => $title)
+                @if (!empty($data[$key]))
+                    <p style="font-size: 13px; margin-bottom: 3px; text-decoration: underline;">
+                        <strong>{!! $title !!}</strong>
+                    </p>
+                    <p style="font-size: 13px; margin-bottom: 8px;">{!! $data[$key] !!}</p>
+                @endif
+            @endforeach
+        </div>
 
         <!-- Diagnosticos de ingreso -->
         <div>
@@ -249,6 +236,9 @@
                                 {!! $diagS[0]['diag_salid'] ?? '' !!} - {!! $diagS[0]['nombre_diag_salid'] ?? '' !!}
                             </p>
                         </td>
+                    </tr>
+                    <tr>
+
                         <td style="width: 50%; vertical-align: top;">
                             @foreach ([
                                 'diag_sali1' => 'nombre_diag_s1',
@@ -271,35 +261,38 @@
             @endif
         </div>
         <!-- Evoluciones -->
-            <div>
-                @php
-                    $evolucionesValidas = collect($dataE)->filter(fn($evolucion) =>
-                        !empty($evolucion['evolucion']) ||
-                        !empty($evolucion['conducta']) ||
-                        !empty($evolucion['examenes']) ||
-                        !empty($evolucion['res_exam']) ||
-                        !empty($evolucion['tratami'])
-                    );
-                @endphp
+        <div>
+            @php
+                $evolucionesValidas = collect($dataE)->filter(fn($evolucion) =>
+                    !empty($evolucion['evolucion']) ||
+                    !empty($evolucion['conducta']) ||
+                    !empty($evolucion['examenes']) ||
+                    !empty($evolucion['res_exam']) ||
+                    !empty($evolucion['tratami'])
+                );
+            @endphp
 
-                @if($evolucionesValidas->isNotEmpty())
-                    @foreach($evolucionesValidas as $evolucion)
-                        <table width="100%" style="margin-bottom: 1px;">
-                            <tr>
-                                <td style="width: 120px;">
-                                    <p style="font-size: 13px; margin-bottom: 1px;">Registro: {!! $evolucion['hora'] ?? '' !!}</p>
-                                </td>
-                                <td>
-                                    <p style="font-size: 12px; margin-bottom: 1px;">
-                                        (DR(A). {!! $evolucion['codigo'] ?? '' !!} - {!! $evolucion['medico'] ?? '' !!} - C.C.
-                                        {!! $evolucion['ceddoc'] ?? '' !!} - REG.MEDICO: {!! $evolucion['regmed'] ?? '' !!} -
-                                        {!! $evolucion['especial'] ?? '' !!})
-                                    </p>
-                                </td>
-                            </tr>
-                        </table>
+            @if($evolucionesValidas->isNotEmpty())
+                @foreach($evolucionesValidas as $evolucion)
+                    <table width="100%" style="margin-bottom: 1px;">
+                        <tr>
+                            <td style="width: 120px;">
+                                <p style="font-size: 13px; margin-bottom: 1px;">
+                                    Registro: {!! $evolucion['hora'] ?? '' !!}</p>
+                            </td>
+                            <td>
+                                <p style="font-size: 12px; margin-bottom: 1px;">
+                                    (DR(A). {!! $evolucion['codigo'] ?? '' !!} - {!! $evolucion['medico'] ?? '' !!} -
+                                    C.C.
+                                    {!! $evolucion['ceddoc'] ?? '' !!} - REG.MEDICO: {!! $evolucion['regmed'] ?? '' !!}
+                                    -
+                                    {!! $evolucion['especial'] ?? '' !!})
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
 
-                        <h3 style="
+                    <h3 style="
                 text-align: center;
                 border: 1px solid black;
                 border-radius: 5px;
@@ -307,28 +300,28 @@
                 display: table;
                 margin: auto auto 1px;
                 margin-top: 10px;">
-                            <strong>ANÁLISIS - PLAN - EXÁMENES - PROCEDIMIENTOS - TRATAMIENTOS</strong>
-                        </h3>
+                        <strong>ANÁLISIS - PLAN - EXÁMENES - PROCEDIMIENTOS - TRATAMIENTOS</strong>
+                    </h3>
 
-                        <div style="padding: 10px; margin-bottom: 10px; border-radius: 5px;">
-                            @foreach ([
-                                'evolucion' => 'Evolución',
-                                'conducta' => 'Plan/Conducta',
-                                'examenes' => 'Exámenes/Estudios Solicitados',
-                                'res_exam' => 'Resultado de Exámenes/Estudios',
-                                'tratami' => 'Prescripciones/Tratamientos'
-                            ] as $key => $title)
-                                @if (!empty($evolucion[$key]))
-                                    <p style="font-size: 13px; margin-bottom: 1px; display: inline-block; text-decoration: underline;">
-                                        <strong>{!! $title !!}</strong>
-                                    </p>
-                                    <p style="font-size: 13px; margin-bottom: 1px;">{!! $evolucion[$key] !!}</p>
-                                @endif
-                            @endforeach
-                        </div>
-                    @endforeach
-                @endif
-            </div>
+                    <div style="padding: 10px; margin-bottom: 10px; border-radius: 5px;">
+                        @foreach ([
+                            'evolucion' => 'Evolución',
+                            'conducta' => 'Plan/Conducta',
+                            'examenes' => 'Exámenes/Estudios Solicitados',
+                            'res_exam' => 'Resultado de Exámenes/Estudios',
+                            'tratami' => 'Prescripciones/Tratamientos'
+                        ] as $key => $title)
+                            @if (!empty($evolucion[$key]))
+                                <p style="font-size: 13px; margin-bottom: 1px; display: inline-block; text-decoration: underline;">
+                                    <strong>{!! $title !!}</strong>
+                                </p>
+                                <p style="font-size: 13px; margin-bottom: 1px;">{!! $evolucion[$key] !!}</p>
+                            @endif
+                        @endforeach
+                    </div>
+                @endforeach
+            @endif
+        </div>
     </div>
 
     <h3 style="
@@ -407,9 +400,12 @@
         </p>
 
         <p style="font-size: 11px; text-align: left">
-            NOTA: Se realizó encuesta epidemiológica al ingreso a la institución sobre síntomas de COVID-19, contacto con
-            pacientes sospechosos o confirmados de COVID-19 y la realización de viajes en los últimos 15 días. Se realiza
-            lavado de manos según las recomendaciones de la OMS, en los cinco momentos, en técnica y duración. Además, se
+            NOTA: Se realizó encuesta epidemiológica al ingreso a la institución sobre síntomas de COVID-19, contacto
+            con
+            pacientes sospechosos o confirmados de COVID-19 y la realización de viajes en los últimos 15 días. Se
+            realiza
+            lavado de manos según las recomendaciones de la OMS, en los cinco momentos, en técnica y duración. Además,
+            se
             utiliza equipo de protección personal y las medidas de protección del paciente para COVID-19. También se
             realiza limpieza y desinfección de los equipos después de la atención de cada paciente.
         </p>

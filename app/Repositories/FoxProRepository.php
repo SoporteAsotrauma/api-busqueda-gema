@@ -534,7 +534,7 @@ class FoxProRepository implements FoxProRepositoryInterface
     public function historiaUti(string $documento, string $mes, string $año)
     {
         $pdo = ConnectionFox::con();
-        $rehospit = "Z:\GEMA_MEDICOS\DATOS\RE_Hospit";
+        $rehospit = "Z:\GEMA_MEDICOS\DATOS\RE_Huci";
         $ptotc00 = "Z:\GEMA10.D\IPT\DATOS\PTOTC00";
         $sahisto = "Z:\\GEMA10.D\\SALUD\\DATOS\\SAHISTOC";
         $vendedor = "Z:\\GEMA10.D\\DGEN\\DATOS\\VENDEDOR";
@@ -550,10 +550,11 @@ class FoxProRepository implements FoxProRepositoryInterface
         try {
             //Ejecuta la consulta SQL
             $stmt = $pdo->query("
-            SELECT d.depart, v.nombre as medico,v.num_id as ceddoc,v.regmed, e.nombre as especial, p.docn_sin, rt.docn, rt.num_id, s.nombre, s.nombre2, s.apellido1, s.apellido2, s.tipo_id, s.fech_nacim, s.edad, s.sexo, s.estad_civ, s.direccion, s.ciudad, s.telefono, s.nomb_resp, s.ocupacion,
-                   rt.freg, rt.hora, rt.moti_solic, rt.reingre, rt.est_ingr, rt.enfer_act, rt.sv_ta as ta, rt.sv_fr as fr, rt.sv_tem as tem, rt.estembr as embri,
-                   rt.estcons, rt.glasglow, rt.cabeza, rt.cuello, rt.torax, rt.abdomen, rt.genitouri, rt.pelvis, rt.dorsoext, rt.neuro, rt.codigo, rt.evolucion, rt.examenes, rt.dest_sali, rt.serv_sali, rt.fecha_egr, rt.hora_egr,
-                   rt.est_salida, rt.dias_inca, rt.conducta, rt.res_exam, rt.tratami
+            SELECT d.depart, d.nombre as nombredepar, v.nombre as medico,v.num_id as ceddoc,v.regmed, e.nombre as especial, p.docn_sin, rt.docn, rt.num_id, s.nombre, s.nombre2, s.apellido1, s.apellido2, s.tipo_id, s.fech_nacim, s.edad, s.sexo, s.estad_civ, s.direccion, s.ciudad, s.telefono, s.nomb_resp, s.ocupacion,
+                   rt.freg, rt.hora, rt.moti_solic, rt.est_ingr, rt.enfer_act, rt.sv_fr as fr, rt.sv_tem as tem, rt.estembr as embri,
+                   rt.estcons, rt.glasglow, rt.cabeza, rt.cuello, rt.torax, rt.genitouri, rt.pelvis, rt.dorsoext, rt.neuro, rt.codigo, rt.examenes, rt.dest_sali, rt.serv_sali, rt.fecha_egr, rt.hora_egr,
+                   rt.est_salida, rt.dias_inca, rt.conducta, rt.res_exam, rt.tratami, m.munic, rt.es_obs, rt.es_act, rt.sv_tsis as sist, rt.sv_tdia as tdia, rt.sv_tmed as tmed, rt.sv_soxi as o2, rt.sv_peso as peso, rt.sv_talla as talla, rt.imc,
+                   rt.gases
             FROM $rehospit rt
             LEFT JOIN $sahisto s
             ON $documento = s.num_histo
@@ -595,7 +596,7 @@ class FoxProRepository implements FoxProRepositoryInterface
         re.diag_sali2, ci8.nombre AS nombre_diag_s2,
         re.diag_sali3, ci9.nombre AS nombre_diag_s3,
         re.diag_sali4, ci10.nombre AS nombre_diag_s4
-    FROM GEMA_MEDICOS/DATOS/RE_HOSPIT re
+    FROM GEMA_MEDICOS/DATOS/RE_Huci re
     LEFT JOIN Z:/GEMA10.d/SALUD/DATOS/cie9 ci6 ON re.diag_salid = ci6.codigo
     LEFT JOIN Z:/GEMA10.d/SALUD/DATOS/cie9 ci7 ON re.diag_sali1 = ci7.codigo
     LEFT JOIN Z:/GEMA10.d/SALUD/DATOS/cie9 ci8 ON re.diag_sali2 = ci8.codigo
@@ -607,9 +608,9 @@ class FoxProRepository implements FoxProRepositoryInterface
 ");
 
             $stmtE = $pdo->query("
-                SELECT ree.conducta, ree.evolucion, ree.examenes, ree.res_exam, ree.tratami, ree.codigo, ree.hora, v.nombre as medico, v.num_id as ceddoc, v.regmed, e.nombre as especial
-                FROM GEMA_MEDICOS\\DATOS\\RE_HOSPIT re
-                LEFT JOIN GEMA_MEDICOS\\DATOS\\RE_HOSPITE ree
+                SELECT ree.conducta, ree.examenes, ree.res_exam, ree.tratami, ree.codigo, ree.hora, v.nombre as medico, v.num_id as ceddoc, v.regmed, e.nombre as especial
+                FROM GEMA_MEDICOS\\DATOS\\RE_Huci re
+                LEFT JOIN GEMA_MEDICOS\\DATOS\\RE_Hucie ree
                 ON re.docn = ree.docn
                 LEFT JOIN $vendedor v
                 ON ree.codigo = v.vendedor

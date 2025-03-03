@@ -40,28 +40,49 @@ $base64 = 'data:image/' . $type . ';base64,' . base64_encode($img);
         <tr>
             <td style="text-align: left; font-size: 11px;"><strong>Edad: </strong>{{ $data['edad'] ?? '' }}</td>
             <td style="text-align: center; font-size: 11px;"><strong>Sexo: </strong>{{ $data['sexo'] ?? '' }}</td>
-            <td style="text-align: right; font-size: 11px;"><strong>Estado civil: </strong>{{ $data['estad_civ'] ?? '' }}</td>
+            <td style="text-align: right; font-size: 11px;"><strong>Estado
+                    civil: </strong>{{ $data['estad_civ'] ?? '' }}</td>
         </tr>
         <tr>
-            <td style="text-align: left; font-size: 11px;"><strong>Dirección: </strong>{{ $data['direccion'] ?? '' }}</td>
+            <td style="text-align: left; font-size: 11px;"><strong>Dirección: </strong>{{ $data['direccion'] ?? '' }}
+            </td>
             <td style="text-align: center; font-size: 11px;"><strong>Ciudad: </strong>{{ $data['ciudad'] ?? '' }}</td>
             <td style="text-align: right; font-size: 11px;"><strong>Dpto: </strong>{{ $data['depart'] ?? '' }}</td>
         </tr>
         <tr>
             <td style="text-align: left; font-size: 11px;"><strong>Teléfono: </strong>{{ $data['telefono'] ?? '' }}</td>
-            <td style="text-align: center; font-size: 11px;"><strong>Ocupación: </strong>{{ $data['ocupacion'] ?? '' }}</td>
-            <td style="text-align: right; font-size: 11px;"><strong>Responsable: </strong>{{ $data['nomb_resp'] ?? '' }}</td>
+            <td style="text-align: center; font-size: 11px;"><strong>Ocupación: </strong>{{ $data['ocupacion'] ?? '' }}
+            </td>
+            <td style="text-align: right; font-size: 11px;"><strong>Responsable: </strong>{{ $data['nomb_resp'] ?? '' }}
+            </td>
         </tr>
         <tr>
-            <td style="text-align: left; font-size: 11px;"><strong>AT: </strong>{{ ($data['es_act'] ?? 0) == 1 ? 'SI' : 'NO' }}</td>
-            <td style="text-align: center; font-size: 11px;"><strong>OBS: </strong>{{ ($data['es_obs'] ?? '') === 'S' ? 'SI' : 'NO' }}</td>
+            <td style="text-align: left; font-size: 11px;"><strong>Residencia habitual: </strong></td>
+            <td style="text-align: center; font-size: 11px;"><strong>Departamento: </strong></td>
+            <td style="text-align: right; font-size: 11px;"><strong>Municipio: </strong></td>
         </tr>
         <tr>
-            <td colspan="2"></td>
-            <td style="text-align: right; font-size: 11px;"><strong>Fecha/Hora de registro: </strong>{{ $data['freg'] ?? '' }} {{ \Carbon\Carbon::parse($data['horare'] ?? '')->format('H:i') }}</td>
+            <td></td>
+            <td style="text-align: center; font-size: 11px;">{{ $data['nombredepar'] ?? ''}}</td>
+            <td style="text-align: right; font-size: 11px;">{{ $data['munic'] ?? ''}}{{ $data['ciudad'] ?? '' }}</td>
+        </tr>
+        <tr>
+            <td style="text-align: left; font-size: 11px;">
+                <strong>Acc. Transito: </strong>{!! ($data['es_act'] ?? 0) == 1 ? 'SI' : 'NO' !!}</td>
+            <td style="text-align: center; font-size: 11px;">
+                <strong>Con observacion: </strong>{!! ($data['es_obs'] ?? '') === 'S' ? 'SI' : 'NO' !!}</td>
+            <td style="text-align: right; font-size: 11px;"><strong>Fecha/Hora de
+                    registro: </strong>{{ $data['freg'] ?? '' }} {{ \Carbon\Carbon::parse($data['hora'] ?? '')->format('H:i') }}
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align: left; font-size: 11px;"><strong style="font-size: 11px;">OBSERVACIÓN</strong>
+            </td>
+            <td></td>
+            <td style="text-align: right; font-size: 11px;">(Inst)
+            </td>
         </tr>
     </table>
-    <strong style="font-size: 11px;">OBSERVACIÓN</strong>
     <div class="separator" style="margin: 5px 0; border-top: 1px solid black;"></div>
 
 </div>
