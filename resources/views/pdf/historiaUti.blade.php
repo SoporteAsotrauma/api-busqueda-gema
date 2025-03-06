@@ -1,6 +1,5 @@
 @php
-    use Carbon\Carbon;
-@endphp
+    @endphp
     <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -144,20 +143,27 @@
         </div>
         <table width="100%" style="margin-bottom: 10px; border-collapse: collapse;">
             <tr>
+                <!-- Columna izquierda -->
                 <td style="width: 50%; vertical-align: top;">
+                    <!-- Diagnóstico de ingreso -->
                     <p style="border-bottom:1px solid black; font-size: 13px; margin-bottom: 1px; font-weight: bold; display: inline-block;">
                         Diagnóstico de ingreso
                     </p>
                     <p style="font-size: 13px; margin-bottom: 1px;">
                         {!! $diag[0]['diag_ingre'] ?? '' !!} - {!! $diag[0]['nombre_diag_ingre'] ?? '' !!}
                     </p>
-                </td>
-                <td style="width: 50%; vertical-align: top;">
-                    <div style="display: flex; flex-wrap: wrap; gap: 10px;">
-                        @foreach ([1, 2, 3, 4] as $i)
-                            @if (!empty($diag[0]["nombre_diag_r$i"]))
-                                <div
-                                    style="width: 48%; border-bottom: 1px solid black; font-size: 12px; margin-bottom: 5px;">
+
+                    <!-- Diagnósticos relacionados (izquierda) -->
+                    @php
+                        $relatedDiags = [1, 2, 3, 4]; // Índices de diagnósticos relacionados
+                        $count = 0; // Contador para alternar entre columnas
+                    @endphp
+
+                    @foreach ($relatedDiags as $i)
+                        @if (!empty($diag[0]["nombre_diag_r$i"]))
+                            @if ($count % 2 == 0)
+                                <!-- Si el contador es par, va a la izquierda -->
+                                <div style="border-bottom: 1px solid black; font-size: 12px; margin-bottom: 5px;">
                                     <p style="font-weight: bold; margin-bottom: 2px;">
                                         Diagnóstico relacionado {{ $i }}
                                     </p>
@@ -166,12 +172,34 @@
                                     </p>
                                 </div>
                             @endif
-                        @endforeach
-                    </div>
+                            @php $count++; @endphp
+                        @endif
+                    @endforeach
+                </td>
+
+                <!-- Columna derecha -->
+                <td style="width: 50%; vertical-align: top;">
+                    <!-- Diagnósticos relacionados (derecha) -->
+                    @php $count = 0; @endphp <!-- Reiniciamos el contador -->
+                    @foreach ($relatedDiags as $i)
+                        @if (!empty($diag[0]["nombre_diag_r$i"]))
+                            @if ($count % 2 != 0)
+                                <!-- Si el contador es impar, va a la derecha -->
+                                <div style="border-bottom: 1px solid black; font-size: 12px; margin-bottom: 5px;">
+                                    <p style="font-weight: bold; margin-bottom: 2px;">
+                                        Diagnóstico relacionado {{ $i }}
+                                    </p>
+                                    <p style="margin-bottom: 2px;">
+                                        {!! $diag[0]["diag_in_r$i"] ?? '' !!} - {!! $diag[0]["nombre_diag_r$i"] !!}
+                                    </p>
+                                </div>
+                            @endif
+                            @php $count++; @endphp
+                        @endif
+                    @endforeach
                 </td>
             </tr>
         </table>
-
         <!-- Analisis plan examenes -->
         <h3 style="
            text-align: center;
@@ -180,14 +208,18 @@
            padding: 5px 90px;
            display: table;
            margin: auto auto 1px;">
-            <strong>ANALISIS-PLAN-EXAMENES-PROCEDIMIENTOS-TRATAMIENTOS</strong>
+            <strong>EVOLUCION MEDICA - DIAGNOSTICOS CONFIRMADOS</strong>
         </h3>
         <div>
             @foreach ([
-                'conducta' => 'Plan/Conducta',
-                'examenes' => 'Exámenes/Estudios Solicitados',
-                'res_exam' => 'Resultado de Exámenes/Estudios',
-                'tratami' => 'Prescripciones/Tratamientos'
+                'indicacion' => 'Indicacion',
+                'estado' => 'Estado',
+                'objetivo' => 'Objetivo',
+                'subjetivo' => 'subjetivo',
+                'res_exam' => 'Interpretacion paraclinicos',
+                'conducta' => 'Analisis - Plan',
+                'examenes' => 'Examenes / Estudios solicitados',
+                'tratami' => 'Prescripciones / Tratamientos'
             ] as $key => $title)
                 @if (!empty($data[$key]))
                     <p style="font-size: 13px; margin-bottom: 3px; text-decoration: underline;">
@@ -228,24 +260,47 @@
 
                 <table width="100%" style="margin-bottom: 10px; border-collapse: collapse;">
                     <tr>
+                        <!-- Columna izquierda -->
                         <td style="width: 50%; vertical-align: top;">
+                            <!-- Diagnóstico principal -->
                             <p style="border-bottom:1px solid black; font-size: 13px; margin-bottom: 1px; font-weight: bold; display: inline-block;">
                                 Diagnóstico principal
                             </p>
                             <p style="font-size: 13px; margin-bottom: 1px;">
                                 {!! $diagS[0]['diag_salid'] ?? '' !!} - {!! $diagS[0]['nombre_diag_salid'] ?? '' !!}
                             </p>
-                        </td>
-                    </tr>
-                    <tr>
 
+                            <!-- Diagnósticos relacionados (izquierda) -->
+                            @php
+                                $relatedDiags = [
+                                    'diag_sali1' => 'nombre_diag_s1',
+                                    'diag_sali2' => 'nombre_diag_s2',
+                                    'diag_sali3' => 'nombre_diag_s3',
+                                    'diag_sali4' => 'nombre_diag_s4'
+                                ];
+                                $leftDiags = array_slice($relatedDiags, 0, 2); // Primeros 2 diagnósticos
+                            @endphp
+
+                            @foreach ($leftDiags as $diagKey => $nameKey)
+                                @if (!empty($diagS[0][$nameKey]))
+                                    <p style="border-bottom:1px solid black; font-size: 12px; margin-bottom: 1px; font-weight: bold; display: inline-block;">
+                                        Diagnóstico relacionado {{ substr($diagKey, -1) }}
+                                    </p>
+                                    <p style="font-size: 12px; margin-bottom: 1px;">
+                                        {!! $diagS[0][$diagKey] ?? '' !!} - {!! $diagS[0][$nameKey] ?? '' !!}
+                                    </p>
+                                @endif
+                            @endforeach
+                        </td>
+
+                        <!-- Columna derecha -->
                         <td style="width: 50%; vertical-align: top;">
-                            @foreach ([
-                                'diag_sali1' => 'nombre_diag_s1',
-                                'diag_sali2' => 'nombre_diag_s2',
-                                'diag_sali3' => 'nombre_diag_s3',
-                                'diag_sali4' => 'nombre_diag_s4'
-                            ] as $diagKey => $nameKey)
+                            <!-- Diagnósticos relacionados (derecha) -->
+                            @php
+                                $rightDiags = array_slice($relatedDiags, 2); // Últimos 2 diagnósticos
+                            @endphp
+
+                            @foreach ($rightDiags as $diagKey => $nameKey)
                                 @if (!empty($diagS[0][$nameKey]))
                                     <p style="border-bottom:1px solid black; font-size: 12px; margin-bottom: 1px; font-weight: bold; display: inline-block;">
                                         Diagnóstico relacionado {{ substr($diagKey, -1) }}
@@ -268,6 +323,10 @@
                     !empty($evolucion['conducta']) ||
                     !empty($evolucion['examenes']) ||
                     !empty($evolucion['res_exam']) ||
+                    !empty($evolucion['indicacion']) ||
+                    !empty($evolucion['estado']) ||
+                    !empty($evolucion['objetivo']) ||
+                    !empty($evolucion['subjetivo']) ||
                     !empty($evolucion['tratami'])
                 );
             @endphp
@@ -300,16 +359,19 @@
                 display: table;
                 margin: auto auto 1px;
                 margin-top: 10px;">
-                        <strong>ANÁLISIS - PLAN - EXÁMENES - PROCEDIMIENTOS - TRATAMIENTOS</strong>
+                        <strong>EVOLUCION MEDICA - DIAGNOSTICOS CONFIRMADOS</strong>
                     </h3>
 
                     <div style="padding: 10px; margin-bottom: 10px; border-radius: 5px;">
                         @foreach ([
-                            'evolucion' => 'Evolución',
-                            'conducta' => 'Plan/Conducta',
-                            'examenes' => 'Exámenes/Estudios Solicitados',
-                            'res_exam' => 'Resultado de Exámenes/Estudios',
-                            'tratami' => 'Prescripciones/Tratamientos'
+                            'indicacion' => 'Indicacion',
+                            'estado' => 'Estado',
+                            'objetivo' => 'Objetivo',
+                            'subjetivo' => 'subjetivo',
+                            'res_exam' => 'Interpretacion paraclinicos',
+                            'conducta' => 'Analisis - Plan',
+                            'examenes' => 'Examenes / Estudios solicitados',
+                            'tratami' => 'Prescripciones / Tratamientos'
                         ] as $key => $title)
                             @if (!empty($evolucion[$key]))
                                 <p style="font-size: 13px; margin-bottom: 1px; display: inline-block; text-decoration: underline;">

@@ -551,9 +551,9 @@ class FoxProRepository implements FoxProRepositoryInterface
             //Ejecuta la consulta SQL
             $stmt = $pdo->query("
             SELECT d.depart, d.nombre as nombredepar, v.nombre as medico,v.num_id as ceddoc,v.regmed, e.nombre as especial, p.docn_sin, rt.docn, rt.num_id, s.nombre, s.nombre2, s.apellido1, s.apellido2, s.tipo_id, s.fech_nacim, s.edad, s.sexo, s.estad_civ, s.direccion, s.ciudad, s.telefono, s.nomb_resp, s.ocupacion,
-                   rt.freg, rt.hora, rt.moti_solic, rt.est_ingr, rt.enfer_act, rt.sv_fr as fr, rt.sv_tem as tem, rt.estembr as embri,
-                   rt.estcons, rt.glasglow, rt.cabeza, rt.cuello, rt.torax, rt.genitouri, rt.pelvis, rt.dorsoext, rt.neuro, rt.codigo, rt.examenes, rt.dest_sali, rt.serv_sali, rt.fecha_egr, rt.hora_egr,
-                   rt.est_salida, rt.dias_inca, rt.conducta, rt.res_exam, rt.tratami, m.munic, rt.es_obs, rt.es_act, rt.sv_tsis as sist, rt.sv_tdia as tdia, rt.sv_tmed as tmed, rt.sv_soxi as o2, rt.sv_peso as peso, rt.sv_talla as talla, rt.imc,
+                   rt.freg, rt.hora, rt.moti_solic, rt.est_ingr, rt.enfer_act, rt.sv_fr as fr, rt.sv_tem as tem, rt.estembr as embri, rt.indicacion, rt.estado, rt.objetivo, rt.subjetivo, rt.res_exam, rt.conducta, rt.examenes, rt.tratami,
+                   rt.estcons, rt.glasglow, rt.cabeza, rt.cuello, rt.torax, rt.genitouri, rt.pelvis, rt.dorsoext, rt.neuro, rt.codigo, rt.dest_sali, rt.serv_sali, rt.fecha_egr, rt.hora_egr,
+                   rt.est_salida, rt.dias_inca, m.munic, rt.es_obs, rt.es_act, rt.sv_tsis as sist, rt.sv_tdia as tdia, rt.sv_tmed as tmed, rt.sv_soxi as o2, rt.sv_peso as peso, rt.sv_talla as talla, rt.imc,
                    rt.gases
             FROM $rehospit rt
             LEFT JOIN $sahisto s
@@ -608,7 +608,7 @@ class FoxProRepository implements FoxProRepositoryInterface
 ");
 
             $stmtE = $pdo->query("
-                SELECT ree.conducta, ree.examenes, ree.res_exam, ree.tratami, ree.codigo, ree.hora, v.nombre as medico, v.num_id as ceddoc, v.regmed, e.nombre as especial
+                SELECT ree.indicacion, ree.estado, ree.objetivo, ree.subjetivo, ree.res_exam, ree.conducta, ree.examenes, ree.tratami, ree.codigo, ree.hora, v.nombre as medico, v.num_id as ceddoc, v.regmed, e.nombre as especial
                 FROM GEMA_MEDICOS\\DATOS\\RE_Huci re
                 LEFT JOIN GEMA_MEDICOS\\DATOS\\RE_Hucie ree
                 ON re.docn = ree.docn
